@@ -1,4 +1,4 @@
-# forum
+# Music forum
 As part of a school assignment
 
 ## NPM used

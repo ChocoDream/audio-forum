@@ -116,4 +116,5 @@ dist
 .pnp.*
 
 #salt
-backend/logic/*.json
+backend/logic/salt.json
+backend/logic/session-secret.json

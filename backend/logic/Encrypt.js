@@ -1,5 +1,4 @@
 const crypto = require("crypto");
-//const { performance } = require('perf_hooks');
 
 module.exports = class Encrypt {
   // Sha 256-encryption with

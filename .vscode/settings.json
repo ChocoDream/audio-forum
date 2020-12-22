@@ -1,3 +1,5 @@
 {
-  "vetur.validation.script": false
+  "vetur.validation.script": false,
+  "vetur.format.defaultFormatter.js": "vscode-typescript",
+  "vetur.format.defaultFormatter.ts": "vscode-typescript"
 }

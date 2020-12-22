@@ -134,8 +134,8 @@ module.exports = class RestApi {
         req.body.password = Encrypt.multiEncrypt(req.body.password);
       }
       let statement = this.db.prepare(`
-         SELECT * FROM users
-         WHERE email = $email AND password = $password
+        SELECT * FROM users
+        WHERE email = $email AND password = $password
       `);
       let user = statement.get(req.body) || null;
       if (user) {

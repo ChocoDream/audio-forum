@@ -12,7 +12,7 @@ import { Component, Prop } from "vue-property-decorator";
 
 @Component({})
 export default class Example extends Vue {
-  @Prop({ type: String }) message;
+  @Prop({ type: String }) message  = "hello world";
 
   count = 0;
   addCount(): void {

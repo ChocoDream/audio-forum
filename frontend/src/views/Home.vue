@@ -1,10 +1,20 @@
 <template>
-  <div class="home">
-    <div v-for="(subforumData, i) of rawData" :key="`${subforumData.name}${i}`">
-      <button @click="onRouteClick(subforumData.route)">
-        {{ subforumData.name }}
-      </button>
-    </div>
+  <div class="home container">
+    <ul class="list-group">
+      <li
+        v-for="(d, i) of data"
+        :key="`${d}+${i}`"
+        class="list-group-item item"
+        @click="onRouteClick(d.route)"
+      >
+        <h2>
+          {{ d.name }}
+        </h2>
+        <h4>
+          Description of some sort
+        </h4>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -17,7 +27,7 @@ import { Component } from "vue-property-decorator";
   components: {},
 })
 export default class Home extends Vue {
-  rawData = [
+  data = [
     {
       name: "Rock",
       route: "/rock",
@@ -33,10 +43,13 @@ export default class Home extends Vue {
   ];
 
   onRouteClick(route) {
-    console.log(route);
     this.$router.push(`/forum${route}`);
   }
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.item:hover {
+  background-color: lightblue;
+}
+</style>

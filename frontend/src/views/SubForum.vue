@@ -1,12 +1,46 @@
 <template>
-  <div>
-    <p>Hello from subforum</p>
-    <p>{{ $route.params.subforum }}</p>
+  <div class="container">
+    <p>route: {{ $route.params.subforum }}</p>
+    <ul class="list-group">
+      <li
+        v-for="(d, i) of data"
+        :key="`${d}+${i}`"
+        class="list-group-item item"
+        @click="onRouteClick()"
+      >
+        <div class="d-flex justify-content-between">
+          <h4>
+            {{ d }}
+          </h4>
+          <span>
+            <p>
+              Posts: 4
+            </p>
+            <!--ADD ICON-->
+          </span>
+        </div>
+      </li>
+    </ul>
   </div>
 </template>
 
-<script lang="ts">
-export default {};
+<script>
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+export default class SubForum extends Vue {
+  data = ["test", "test2", "test3"];
+
+  currentRoute() {
+    return this.$route.path;
+  }
+  onRouteClick(){
+    this.$router.push(`${this.currentRoute()}/1`)
+  }
+}
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.item:hover {
+  background-color: lightblue;
+}
+</style>

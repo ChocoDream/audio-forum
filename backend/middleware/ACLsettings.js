@@ -6,13 +6,19 @@ module.exports = {
       or false (not allowed route)
   */
   restPrefix: "/api/",
-  products() {
+  posts() {
     // Let everyone trash the product table
+    return true;
+  },
+  subforums() {
+    return true;
+  },
+  threads() {
     return true;
   },
   users(user, method, req) {
     // Allow everyone to create a user if the userRole is basicUser
-    if (method === "POST" && req.body.userRole === "basicUser") {
+    if (method === "POST") {
       return true;
     }
     // Allow admins to create a user with any role...
@@ -20,7 +26,7 @@ module.exports = {
       return true;
     }
     // Allow all logged in users to a see a list of other users
-    if (method === "GET" && user.userRole) {
+    if (method === "GET") {
       return true;
     }
     // Allow admins to change info about a user
@@ -43,4 +49,7 @@ module.exports = {
     // Everyone should always be allowd to try to login and to logout
     return true;
   },
+  fullinfo() {
+    return true
+  }
 };

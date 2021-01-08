@@ -6,8 +6,8 @@ module.exports = class RestApi {
     this.app = expressApp;
     this.db = sqlite3(pathToDb);
     this.prefix = urlPrefix;
-
     let tables = this.getAllTables();
+    console.log(tables);
     for (let table of tables) {
       this.createGetAllRoute(table);
       this.createGetRoute(table);
@@ -17,6 +17,7 @@ module.exports = class RestApi {
     }
 
     this.addLoginRoutes();
+    this.addUserRoutes();
   }
 
   getAllTables() {
@@ -155,6 +156,36 @@ module.exports = class RestApi {
     this.app.delete(this.prefix + "login", (req, res) => {
       delete req.session.user;
       res.json({ loggedOut: true });
+    });
+  }
+
+  addUserRoutes() {
+    this.app.get(this.prefix + "fullinfo/:id", (req, res) => {
+      let statement = this.db.prepare(`
+      SELECT 
+          users.id, 
+          users.username, 
+          users.email, 
+          GROUP_CONCAT(userroles.name, ", ") AS roles, 
+          userroles.subForumId 
+      FROM users
+        INNER JOIN
+          userrolesXusers,
+          userroles
+        ON userrolesXusers.userId = users.id
+        AND userroles.id = userrolesXusers.userRoleId
+      WHERE users.id = $id
+    `);
+      let result;
+      try {
+        result = statement.get(req.params) || null;
+      } catch (e) {
+        result = { error: e + "" };
+      }
+      if (result) {
+        delete result.password;
+      }
+      res.json(result);
     });
   }
 };

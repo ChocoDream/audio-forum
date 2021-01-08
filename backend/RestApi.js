@@ -7,7 +7,6 @@ module.exports = class RestApi {
     this.db = sqlite3(pathToDb);
     this.prefix = urlPrefix;
     let tables = this.getAllTables();
-    console.log(tables);
     for (let table of tables) {
       this.createGetAllRoute(table);
       this.createGetRoute(table);
@@ -165,20 +164,32 @@ module.exports = class RestApi {
       SELECT 
           users.id, 
           users.username, 
-          users.email, 
-          GROUP_CONCAT(userroles.name, ", ") AS roles, 
-          userroles.subForumId 
+          users.email
+      FROM users
+      WHERE users.id = $id
+    `);
+      let statementRoles = this.db.prepare(`
+      SELECT 
+          userroles.name,
+          userroles.subForumId
       FROM users
         INNER JOIN
           userrolesXusers,
           userroles
-        ON userrolesXusers.userId = users.id
+        ON users.id = userrolesXusers.userId
         AND userroles.id = userrolesXusers.userRoleId
       WHERE users.id = $id
     `);
       let result;
       try {
-        result = statement.get(req.params) || null;
+        let stateRoles = statementRoles.all(req.params)
+        result =
+          Object.assign(statement.get(req.params), {
+            roles: stateRoles.map((x) => x.name),
+          }) || null;
+        if (result.roles.includes("moderator") !== -1) {
+          //TODO
+        }
       } catch (e) {
         result = { error: e + "" };
       }

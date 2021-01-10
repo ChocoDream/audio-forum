@@ -7,16 +7,16 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import Nav from './components/Nav.vue'
-import Sidenav from './components/Sidenav.vue';
-import { Component } from "vue-property-decorator";
+import Vue from "vue";
+import Nav from "./components/Nav.vue";
+import Sidenav from "./components/Sidenav.vue";
+import { Component, Watch } from "vue-property-decorator";
 
 @Component({
   components: {
     Nav,
-    Sidenav
-  }
+    Sidenav,
+  },
 })
 export default class App extends Vue {
 
@@ -24,7 +24,6 @@ export default class App extends Vue {
 </script>
 
 <style lang="scss">
-
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

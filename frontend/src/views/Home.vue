@@ -1,7 +1,5 @@
 <template>
   <div class="home container">
-    <p> {{userState() ? 'Log out' : 'Log In'}} </p>
-    <p>Register</p>
     <ul class="list-group">
       <li
         v-for="(d, i) of data"
@@ -43,10 +41,6 @@ export default class Home extends Vue {
       route: "/3",
     },
   ];
-
-  userState() {
-    return this.$store.state.isLoggedIn;
-  }
 
   goToRoute(route) {
     this.$router.push(`/forum${route}`);

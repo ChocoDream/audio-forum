@@ -8,6 +8,11 @@ module.exports = class RestApi {
     this.prefix = urlPrefix;
     let tables = this.getAllTables();
     for (let table of tables) {
+      if (table === "users") {
+        //SPECIFIES WHAT GENERIC ROUTES I WILL ALLOW
+
+        continue;
+      }
       this.createGetAllRoute(table);
       this.createGetRoute(table);
       this.createPostRoute(table);
@@ -159,7 +164,7 @@ module.exports = class RestApi {
   }
 
   addUserRoutes() {
-    this.app.get(this.prefix + "fullinfo/:id", (req, res) => {
+    this.app.get(this.prefix + "users/:id", (req, res) => {
       let statement = this.db.prepare(`
       SELECT 
           users.id, 
@@ -182,13 +187,20 @@ module.exports = class RestApi {
     `);
       let result;
       try {
-        let stateRoles = statementRoles.all(req.params)
+        let stateRoles = statementRoles.all(req.params);
         result =
           Object.assign(statement.get(req.params), {
             roles: stateRoles.map((x) => x.name),
           }) || null;
-        if (result.roles.includes("moderator") !== -1) {
-          //TODO
+        if (result.roles.includes("moderator")) {
+          //IF USER CONTAIN MODERATOR
+          result.moderatorSubForumId = stateRoles
+            .filter((x) => x.name === "moderator")
+            .map((x) => x.subForumId);
+
+          //REMOVE DUPLICATES
+          const roles = new Set(result.roles);
+          result.roles = [...roles];
         }
       } catch (e) {
         result = { error: e + "" };
@@ -197,6 +209,14 @@ module.exports = class RestApi {
         delete result.password;
       }
       res.json(result);
+    });
+    this.app.post(this.prefix + "users", (req, res) => {
+      //user - 5
+      const body = req.body;
+      let statement = this.db.prepare(`
+      INSERT INTO ${table} (${Object.keys(body)})
+      VALUES (${Object.keys(body).map((x) => "$" + x)})
+      `);
     });
   }
 };

@@ -22,7 +22,7 @@ module.exports = {
       return true;
     }
     // Allow admins to create a user with any role...
-    if (method === "POST" && user.userRole === "admin") {
+    if (method === "POST" && user.roles === "admin") {
       return true;
     }
     // Allow all logged in users to a see a list of other users
@@ -30,7 +30,7 @@ module.exports = {
       return true;
     }
     // Allow admins to change info about a user
-    if (method === "PUT" && user.userRole === "admin") {
+    if (method === "PUT" && user.roles === "admin") {
       return true;
     }
     // Allow a user to change info about him/herself
@@ -40,7 +40,7 @@ module.exports = {
       return true;
     }
     // Allow admins to delete users
-    if (method === "DELETE" && user.userRole === "admin") {
+    if (method === "DELETE" && user.roles === "admin") {
       return true;
     }
     return false; // otherwise do not allow the request
@@ -48,8 +48,5 @@ module.exports = {
   login() {
     // Everyone should always be allowd to try to login and to logout
     return true;
-  },
-  fullinfo() {
-    return true
   }
 };

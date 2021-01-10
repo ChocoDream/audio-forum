@@ -6,9 +6,16 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     currentUser: {},
-    isLoggedIn: false
+    isLoggedIn: false,
+    subForums: [],
+    threads: [],
+    posts: []
   },
-  mutations: {},
+  mutations: {
+    setCurrentUser(state, data) {
+      state.currentUser = data;
+    }
+  },
   actions: {},
   modules: {}
 });

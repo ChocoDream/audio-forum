@@ -6,7 +6,7 @@
         v-for="(d, i) of data"
         :key="`${d}+${i}`"
         class="list-group-item item"
-        @click="onRouteClick()"
+        @click="goToRoute()"
       >
         <div class="d-flex justify-content-between">
           <h4>
@@ -33,7 +33,7 @@ export default class SubForum extends Vue {
   currentRoute() {
     return this.$route.path;
   }
-  onRouteClick(){
+  goToRoute(){
     this.$router.push(`${this.currentRoute()}/1`)
   }
 }

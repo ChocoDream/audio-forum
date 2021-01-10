@@ -7,7 +7,7 @@
         v-for="(d, i) of data"
         :key="`${d}+${i}`"
         class="list-group-item item"
-        @click="onRouteClick(d.route)"
+        @click="goToRoute(d.route)"
       >
         <h2>
           {{ d.name }}
@@ -32,15 +32,15 @@ export default class Home extends Vue {
   data = [
     {
       name: "Rock",
-      route: "/rock",
+      route: "/1",
     },
     {
       name: "Alternative indle",
-      route: "/indle",
+      route: "/2",
     },
     {
       name: "Synthwave",
-      route: "/synthwave",
+      route: "/3",
     },
   ];
 
@@ -48,7 +48,7 @@ export default class Home extends Vue {
     return this.$store.state.isLoggedIn;
   }
 
-  onRouteClick(route) {
+  goToRoute(route) {
     this.$router.push(`/forum${route}`);
   }
 }

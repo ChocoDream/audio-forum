@@ -18,6 +18,11 @@ export default class Sidenav extends Vue {
       route: "/user",
     },
     {
+      name: "Home",
+      premission: "all",
+      route: "/"
+    },
+    {
       name: "Log in",
       premission: "guest",
       route: "/log-in",
@@ -37,7 +42,7 @@ export default class Sidenav extends Vue {
   $router: any;
 
   get sideItems() {
-    return this.default_sideitems.filter((item) => item.premission === "guest"); //Works for now, filter sideItems depending on premission
+    return this.default_sideitems.filter((item) => item.premission === "guest" || item.premission === "all"); //Works for now, filter sideItems depending on premission
   }
 
   goToRoute(route: string): void {

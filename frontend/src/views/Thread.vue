@@ -1,7 +1,5 @@
 <template>
   <div>
-    <p>Hello from Thread</p>
-    <p>{{ $route.params }}</p>
     <ul class="list-group">
       <Post v-for="(item, i) of postData" :key="`${item.id}+${i}`" :post="item" />
     </ul>

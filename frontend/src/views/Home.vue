@@ -2,16 +2,16 @@
   <div class="home container">
     <ul class="list-group">
       <li
-        v-for="(d, i) of data"
-        :key="`${d}+${i}`"
+        v-for="(item, i) of subForumData"
+        :key="`${item}+${i}`"
         class="list-group-item item"
-        @click="goToRoute(d.route)"
+        @click="goToRoute(item.id)"
       >
         <h2>
-          {{ d.name }}
+          {{ item.title }}
         </h2>
         <h4>
-          Description of some sort
+          {{item.description}}
         </h4>
       </li>
     </ul>
@@ -28,23 +28,17 @@ import { Component } from "vue-property-decorator";
   },
 })
 export default class Home extends Vue {
-  data = [
-    {
-      name: "Rock",
-      route: "/1",
-    },
-    {
-      name: "Alternative indle",
-      route: "/2",
-    },
-    {
-      name: "Synthwave",
-      route: "/3",
-    },
-  ];
+
+  get subForumData() {
+    return this.$store.state.subForums
+  }
+
+  created() {
+    this.$store.dispatch('fetchSubForums')
+  }
 
   goToRoute(route) {
-    this.$router.push(`/forum${route}`);
+    this.$router.push(`/forum/${route}`);
   }
 }
 </script>

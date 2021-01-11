@@ -1,16 +1,15 @@
 <template>
   <div class="container">
-    <p>route: {{ $route.params.subforum }}</p>
     <ul class="list-group">
       <li
-        v-for="(d, i) of data"
-        :key="`${d}+${i}`"
+        v-for="(item, i) of threadData"
+        :key="`${item}+${i}`"
         class="list-group-item item"
-        @click="goToRoute()"
+        @click="goToRoute(item)"
       >
         <div class="d-flex justify-content-between">
-          <h4>
-            {{ d }}
+          <h4 class="item-title">
+            {{ item.title }}
           </h4>
           <span>
             <p>
@@ -18,6 +17,11 @@
             </p>
             <!--ADD ICON-->
           </span>
+        </div>
+        <div>
+          <p class="item-description">
+            {{item.description}}
+          </p>
         </div>
       </li>
     </ul>
@@ -34,8 +38,16 @@ export default class SubForum extends Vue {
   currentRoute() {
     return this.$route.path;
   }
-  goToRoute(){
-    this.$router.push(`${this.currentRoute()}/1`)
+  goToRoute(item) {
+    this.$router.push(`${this.currentRoute()}/${item.id}`);
+  }
+
+  created() {
+    this.$store.dispatch("fetchThreadsFromId", this.$route.params.subforum);
+  }
+
+  get threadData() {
+    return this.$store.state.threads || []
   }
 }
 </script>

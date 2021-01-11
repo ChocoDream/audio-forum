@@ -1,5 +1,5 @@
 <template>
-  <div class="sidenav">
+  <div class="sidenav" :style="sidenavWidth">
     <p v-for="(item, i) of sideItems" :key="`${item.name}+${i}`">
       <a @click="goToRoute(item.route)"> {{ item.name }} </a>
     </p>
@@ -20,7 +20,7 @@ export default class Sidenav extends Vue {
     {
       name: "Home",
       premission: "all",
-      route: "/"
+      route: "/",
     },
     {
       name: "Log in",
@@ -40,9 +40,22 @@ export default class Sidenav extends Vue {
   ];
   $route: any;
   $router: any;
+  $store: any;
 
   get sideItems() {
-    return this.default_sideitems.filter((item) => item.premission === "guest" || item.premission === "all"); //Works for now, filter sideItems depending on premission
+    return this.default_sideitems.filter(
+      (item) => item.premission === "guest" || item.premission === "all"
+    ); //Works for now, filter sideItems depending on premission
+  }
+
+  get sidenavState() {
+    return this.$store.state.sidenavState
+  }
+
+  get sidenavWidth() {
+    return {
+      width: this.sidenavState ? '18vw' : '0'
+    }
   }
 
   goToRoute(route: string): void {
@@ -55,7 +68,6 @@ export default class Sidenav extends Vue {
 <style scoped lang="scss">
 .sidenav {
   height: 100%; /* 100% Full-height */
-  width: 18vw; /* 0 width - change this with JavaScript */
   position: fixed; /* Stay in place */
   z-index: 1; /* Stay on top */
   top: 0; /* Stay at the top */

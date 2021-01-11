@@ -9,6 +9,7 @@ export default new Vuex.Store({
     subForums: [],
     threads: [],
     posts: [],
+    sidenavState: false,
   },
   mutations: {
     setCurrentUser(state, data) {
@@ -23,11 +24,22 @@ export default new Vuex.Store({
     setPosts(state, data) {
       state.posts = data;
     },
+    toggleSidenav(state) {
+      state.sidenavState = !state.sidenavState;
+    },
   },
   actions: {
     async fetchSubForums({ commit }) {
-      const result = await fetch('/api/subforums');
-      commit("setSubForums", await result.json())
+      const result = await fetch("/api/subforums");
+      commit("setSubForums", await result.json());
+    },
+    async fetchThreads({ commit }, id) {
+      const result = await fetch("/api/threads");
+      commit("setThreads", await result.json());
+    },
+    async fetchPosts({ commit }, id) {
+      const result = await fetch("/api/posts");
+      commit("setPosts", await result.json());
     },
   },
   modules: {},

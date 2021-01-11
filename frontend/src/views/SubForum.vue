@@ -33,7 +33,6 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 @Component
 export default class SubForum extends Vue {
-  data = ["test", "test2", "test3"];
 
   currentRoute() {
     return this.$route.path;

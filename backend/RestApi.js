@@ -49,11 +49,11 @@ module.exports = class RestApi {
     });
   }
 
-  createGetRoute(table) {
+  createGetRoute(table, idValue = "id") {
     this.app.get(this.prefix + table + "/:id", (req, res) => {
       let statement = this.db.prepare(`
       SELECT * FROM ${table}
-      WHERE id = $id
+      WHERE ${idValue} = $id
     `);
       let result;
       try {
@@ -164,8 +164,52 @@ module.exports = class RestApi {
   }
 
   addUserRoutes() {
+    this.app.get(this.prefix + "users", (req, res) => {
+      const statement = this.db.prepare(`
+        SELECT 
+            users.id, 
+            users.username, 
+            users.email
+        FROM users
+      `);
+      const statementRoles = this.db.prepare(`
+        SELECT 
+            userroles.name,
+            userroles.subForumId
+        FROM users
+          INNER JOIN
+            userrolesXusers,
+            userroles
+          ON users.id = userrolesXusers.userId
+          AND userroles.id = userrolesXusers.userRoleId
+        WHERE users.id = $id
+      `);
+      let result;
+      try {
+        let users = statement.all();
+        users = users.map((user) => {
+          const stateRoles = statementRoles.all({ id: user.id });
+          Object.assign(user, { roles: stateRoles.map((x) => x.name) }) || null;
+          if (user.roles.includes("moderator")) {
+            //IF USER CONTAIN MODERATOR
+            user.moderatorSubForumId = stateRoles
+              .filter((x) => x.name === "moderator")
+              .map((x) => x.subForumId);
+
+            //REMOVE DUPLICATES
+            const roles = new Set(user.roles);
+            user.roles = [...roles];
+          }
+          return user;
+        });
+        result = users;
+      } catch (e) {
+        result = { error: e + "" };
+      }
+      res.json(result);
+    });
     this.app.get(this.prefix + "users/:id", (req, res) => {
-      let statement = this.db.prepare(`
+      const statement = this.db.prepare(`
       SELECT 
           users.id, 
           users.username, 
@@ -173,7 +217,7 @@ module.exports = class RestApi {
       FROM users
       WHERE users.id = $id
     `);
-      let statementRoles = this.db.prepare(`
+      const statementRoles = this.db.prepare(`
       SELECT 
           userroles.name,
           userroles.subForumId
@@ -211,12 +255,24 @@ module.exports = class RestApi {
       res.json(result);
     });
     this.app.post(this.prefix + "users", (req, res) => {
-      //user - 5
       const body = req.body;
+      if (body.password) {
+        body.password = Encrypt.multiEncrypt(body.password);
+      }
       let statement = this.db.prepare(`
-      INSERT INTO ${table} (${Object.keys(body)})
+      INSERT INTO users (${Object.keys(body)})
       VALUES (${Object.keys(body).map((x) => "$" + x)})
       `);
+      let addRole = this.db.prepare(`
+      INSERT INTO userrolesXusers (userRoleId, userId)
+      VALUES (5, $userId)`);
+      try {
+        const state = statement.run(body);
+        addRole.run({ userId: state.lastInsertRowid });
+        res.json(state);
+      } catch (e) {
+        console.error(e);
+      }
     });
   }
 };

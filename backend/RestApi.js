@@ -22,6 +22,8 @@ module.exports = class RestApi {
 
     this.addLoginRoutes();
     this.addUserRoutes();
+    this.addChildToParentRoutes("thread", "subForum", "threads");
+    this.addChildToParentRoutes("post", "thread", "posts");
   }
 
   getAllTables() {
@@ -49,15 +51,15 @@ module.exports = class RestApi {
     });
   }
 
-  createGetRoute(table, idValue = "id") {
+  createGetRoute(table, idKey = "id") {
     this.app.get(this.prefix + table + "/:id", (req, res) => {
       let statement = this.db.prepare(`
       SELECT * FROM ${table}
-      WHERE ${idValue} = $id
+      WHERE ${idKey} = $id
     `);
       let result;
       try {
-        result = statement.get(req.params) || null;
+        result = statement.all(req.params) || null;
       } catch (e) {
         result = { error: e + "" };
       }
@@ -91,7 +93,7 @@ module.exports = class RestApi {
     });
   }
 
-  createPutRoute(table) {
+  createPutRoute(table, idKey = "id") {
     this.app.put(this.prefix + table + "/:id", (req, res) => {
       let b = req.body;
       // If the request body has a key password
@@ -106,7 +108,7 @@ module.exports = class RestApi {
       let statement = this.db.prepare(`
       UPDATE ${table} 
       SET ${Object.keys(b).map((x) => x + " = $" + x)}
-      WHERE id = $id
+      WHERE ${idKey} = $id
     `);
       // Run the statement
       try {
@@ -117,10 +119,10 @@ module.exports = class RestApi {
     });
   }
 
-  createDeleteRoute(table) {
+  createDeleteRoute(table, idKey = "id") {
     this.app.delete(this.prefix + table + "/:id", (req, res) => {
       let statement = this.db.prepare(`
-        DELETE FROM ${table} WHERE id = $id
+        DELETE FROM ${table} WHERE ${idKey} = $id
       `);
       try {
         res.json(statement.run(req.params));
@@ -142,6 +144,7 @@ module.exports = class RestApi {
         SELECT * FROM users
         WHERE email = $email AND password = $password
       `);
+      //ADD ROLES INJECTION
       let user = statement.get(req.body) || null;
       if (user) {
         delete user.password;
@@ -274,5 +277,31 @@ module.exports = class RestApi {
         console.error(e);
       }
     });
+    this.app.put(this.prefix + "users", (req, res) => {
+      //UPDATE USER
+    });
+  }
+
+  addChildToParentRoutes(
+    child = "thread",
+    parent = "subForum",
+    table = "threads"
+  ) {
+    this.app.get(
+      this.prefix + `${child}${parent.toLowerCase()}/:id`,
+      (req, res) => {
+        let statement = this.db.prepare(`
+        SELECT * FROM ${table}
+        WHERE ${parent + "Id"} = $id
+      `);
+        let result;
+        try {
+          result = statement.all(req.params) || null
+        } catch (e) {
+          result = { error: e + "" };
+        }
+        res.json(result)
+      }
+    );
   }
 };

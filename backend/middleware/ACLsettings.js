@@ -21,16 +21,12 @@ module.exports = {
     if (method === "POST") {
       return true;
     }
-    // Allow admins to create a user with any role...
-    if (method === "POST" && user.roles === "admin") {
-      return true;
-    }
     // Allow all logged in users to a see a list of other users
     if (method === "GET") {
       return true;
     }
     // Allow admins to change info about a user
-    if (method === "PUT" && user.roles === "admin") {
+    if (method === "PUT" && user.roles === "adminstrator") {
       return true;
     }
     // Allow a user to change info about him/herself
@@ -40,7 +36,7 @@ module.exports = {
       return true;
     }
     // Allow admins to delete users
-    if (method === "DELETE" && user.roles === "admin") {
+    if (method === "DELETE" && user.roles === "adminstrator") {
       return true;
     }
     return false; // otherwise do not allow the request
@@ -48,5 +44,11 @@ module.exports = {
   login() {
     // Everyone should always be allowd to try to login and to logout
     return true;
+  },
+  threadsubforum() {
+    return true;
+  },
+  postthread() {
+    return true
   }
 };

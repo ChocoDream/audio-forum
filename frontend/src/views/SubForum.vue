@@ -28,16 +28,20 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 @Component
 export default class SubForum extends Vue {
+  $route: any
+  $router: any
+  $store: any
 
   currentRoute() {
     return this.$route.path;
   }
-  goToRoute(item) {
+
+  goToRoute(item: any) {
     this.$router.push(`${this.currentRoute()}/${item.id}`);
   }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container subforum">
     <ul class="list-group">
       <li
         v-for="(item, i) of threadData"
@@ -20,7 +20,7 @@
         </div>
         <div>
           <p class="item-description">
-            {{item.description}}
+            {{ item.description }}
           </p>
         </div>
       </li>
@@ -33,9 +33,9 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 @Component
 export default class SubForum extends Vue {
-  $route: any
-  $router: any
-  $store: any
+  $route: any;
+  $router: any;
+  $store: any;
 
   currentRoute() {
     return this.$route.path;
@@ -46,16 +46,22 @@ export default class SubForum extends Vue {
   }
 
   created() {
-    this.$store.dispatch("fetchThreadsWithSubForumId", this.$route.params.subforum);
+    this.$store.dispatch(
+      "fetchThreadsWithSubForumId",
+      this.$route.params.subforum
+    );
   }
 
   get threadData() {
-    return this.$store.state.threads || []
+    return this.$store.state.threads || [];
   }
 }
 </script>
 
 <style scoped lang="scss">
+.subforum {
+  padding-top: 6vh;
+}
 .item:hover {
   background-color: lightblue;
 }

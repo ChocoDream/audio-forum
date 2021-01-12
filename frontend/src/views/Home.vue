@@ -11,7 +11,7 @@
           {{ item.title }}
         </h2>
         <h4>
-          {{item.description}}
+          {{ item.description }}
         </h4>
       </li>
     </ul>
@@ -24,17 +24,15 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 
 @Component({
-  components: {
-  },
+  components: {},
 })
 export default class Home extends Vue {
-
   get subForumData() {
-    return this.$store.state.subForums
+    return this.$store.state.subForums;
   }
 
   created() {
-    this.$store.dispatch('fetchSubForums')
+    this.$store.dispatch("fetchSubForums");
   }
 
   goToRoute(route) {
@@ -44,6 +42,9 @@ export default class Home extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.home {
+  padding-top: 6vh;
+}
 .item:hover {
   background-color: lightblue;
 }

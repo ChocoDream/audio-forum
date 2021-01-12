@@ -1,11 +1,16 @@
 <template>
   <div class="sidenav" :style="sidenavWidth">
+    <button
+      @click="closeNavbar"
+      type="button"
+      class="nav-close-button"
+      aria-label="Close"
+    >
+      X
+    </button>
     <p v-for="(item, i) of sideItems" :key="`${item.name}+${i}`">
       <a @click="goToRoute(item.route)" class="nav-link"> {{ item.name }} </a>
     </p>
-    <div>
-
-    </div>
   </div>
 </template>
 
@@ -52,18 +57,23 @@ export default class Sidenav extends Vue {
   }
 
   get sidenavState() {
-    return this.$store.state.sidenavState
+    return this.$store.state.sidenavState;
   }
 
   get sidenavWidth() {
     return {
-      width: this.sidenavState ? '18vw' : '0'
-    }
+      width: this.sidenavState ? "18vw" : "0",
+    };
   }
 
   goToRoute(route: string): void {
+    this.$store.commit("toggleSidenav");
     if (this.$route.path === route) return;
     this.$router.push(route);
+  }
+
+  closeNavbar() {
+    this.$store.commit("toggleSidenav");
   }
 }
 </script>
@@ -79,6 +89,14 @@ export default class Sidenav extends Vue {
   overflow-x: hidden; /* Disable horizontal scroll */
   padding-top: 5vh;
   transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+
+  .nav-close-button {
+    background-color: transparent;
+    color: #818181;
+    border: none;
+    text-decoration: none;
+  }
+
   a {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
@@ -90,7 +108,7 @@ export default class Sidenav extends Vue {
   a:hover {
     background-color: #f1f1f1;
   }
-  .nav-link:hover{
+  .nav-link:hover {
     cursor: pointer;
   }
 }

@@ -66,7 +66,9 @@ module.exports = class RestApi {
       if (result) {
         delete result.password;
       }
-      res.json(result);
+      if (result) res.status("200").json(result);
+      else if (result.hasOwnProperty("error")) res.status("400").json(result);
+      else res.status("404").json(result);
     });
   }
 
@@ -86,7 +88,7 @@ module.exports = class RestApi {
     `);
       // Run the statement
       try {
-        res.json(statement.run(b));
+        res.status("201").json(statement.run(b));
       } catch (e) {
         res.json({ error: e + "" });
       }
@@ -150,13 +152,16 @@ module.exports = class RestApi {
         delete user.password;
         // store the logged in user in a session
         req.session.user = user;
+        res.status("200").json(user);
+      } else {
+        res.status("404").json(user);
       }
-      res.json(user);
     });
 
     // GET - check if logged in and return user if so
     this.app.get(this.prefix + "login", (req, res) => {
-      res.json(req.session.user || null);
+      if (req.session.user) res.status("200").json(req.session.user);
+      else res.status("404").json(null);
     });
 
     // DELETE - logged out a logged in user
@@ -296,11 +301,13 @@ module.exports = class RestApi {
       `);
         let result;
         try {
-          result = statement.all(req.params) || null
+          result = statement.all(req.params) || null;
         } catch (e) {
           result = { error: e + "" };
         }
-        res.json(result)
+        if (result.length > 0) res.status("200").json(result);
+        else if (result.hasOwnProperty("error")) res.status("400").json(result);
+        else res.status("404").json(result);
       }
     );
   }

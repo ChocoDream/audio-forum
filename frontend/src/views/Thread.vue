@@ -25,7 +25,7 @@ export default class Thread extends Vue {
   }
 
   created() {
-    this.$store.dispatch("fetchPostsFromId", this.$route.params.thread);
+    this.$store.dispatch("fetchPostsWithThreadId", this.$route.params.thread);
   }
 }
 </script>

@@ -33,11 +33,11 @@ export default new Vuex.Store({
       const result = await fetch("/api/subforums");
       commit("setSubForums", await result.json());
     },
-    async fetchThreadsFromId({ commit }, id) {
+    async fetchThreadsWithSubForumId({ commit }, id) {
       const result = await fetch(`/api/threadsubforum/${id}`);
       commit("setThreads", await result.json());
     },
-    async fetchPostsFromId({ commit }, id) {
+    async fetchPostsWithThreadId({ commit }, id) {
       const result = await fetch(`/api/postthread/${id}`);
       commit("setPosts", await result.json());
     },

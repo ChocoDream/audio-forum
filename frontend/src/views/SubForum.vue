@@ -46,7 +46,7 @@ export default class SubForum extends Vue {
   }
 
   created() {
-    this.$store.dispatch("fetchThreadsFromId", this.$route.params.subforum);
+    this.$store.dispatch("fetchThreadsWithSubForumId", this.$route.params.subforum);
   }
 
   get threadData() {

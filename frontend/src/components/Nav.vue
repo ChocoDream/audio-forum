@@ -1,7 +1,7 @@
 <template>
   <nav class="row">
-    <sidenav-button />
-    <div class="col">
+    <sidenav-button class="col col-1 pl-3" />
+    <div class="col col-10">
       <h1 class="logo" @click="goToHome()">Music Forum</h1>
     </div>
   </nav>

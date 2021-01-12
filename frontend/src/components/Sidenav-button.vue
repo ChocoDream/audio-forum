@@ -1,8 +1,6 @@
 <template>
   <div>
-    <button @click="openSidenav">
-      Open
-    </button>
+    <span class="material-icons button" @click="openSidenav">menu</span>
   </div>
 </template>
 
@@ -11,11 +9,16 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 @Component
 export default class SidenavButton extends Vue {
-  $store: any
-  openSidenav(){
-    this.$store.commit('toggleSidenav')
+  $store: any;
+  openSidenav() {
+    this.$store.commit("toggleSidenav");
   }
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.button {
+  font-size: 3.2em;
+  cursor: pointer;
+}
+</style>

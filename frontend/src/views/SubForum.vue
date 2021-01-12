@@ -13,7 +13,7 @@
           </h4>
           <span>
             <p>
-              Posts: 4
+              <!--osts: 4-->
             </p>
             <!--ADD ICON-->
           </span>

@@ -33,7 +33,8 @@
         @change="errorMessage = ''"
         required
       />
-      <p class="text-danger">{{ errorMessage }}</p>
+      <p class="text-danger" v-show="errorMessage">{{ errorMessage }}</p>
+      
       <button class="btn btn-primary" type="submit" value="submit">
         Log in
       </button>

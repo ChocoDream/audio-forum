@@ -146,10 +146,34 @@ module.exports = class RestApi {
         SELECT * FROM users
         WHERE email = $email AND password = $password
       `);
-      //ADD ROLES INJECTION
+      const statementRoles = this.db.prepare(`
+      SELECT 
+          userroles.name,
+          userroles.subForumId
+      FROM users
+        INNER JOIN
+          userrolesXusers,
+          userroles
+        ON users.id = userrolesXusers.userId
+        AND userroles.id = userrolesXusers.userRoleId
+      WHERE users.id = $id
+      `);
       let user = statement.get(req.body) || null;
       if (user) {
         delete user.password;
+
+        const stateRoles = statementRoles.all({ id: user.id });
+        user = Object.assign(user, { roles: stateRoles.map((x) => x.name) });
+        if (user.roles.includes("moderator")) {
+          //IF USER CONTAIN MODERATOR
+          user.moderatorSubForumId = stateRoles
+            .filter((x) => x.name === "moderator")
+            .map((x) => x.subForumId);
+
+          //REMOVE DUPLICATES
+          const roles = new Set(user.roles);
+          user.roles = [...roles];
+        }
         // store the logged in user in a session
         req.session.user = user;
         res.status("200").json(user);

@@ -53,6 +53,7 @@ import { Component } from "vue-property-decorator";
 @Component
 export default class LoginModal extends Vue {
   $router: any;
+  $store: any;
   errorMessage = "";
   registerUser() {
     this.$router.push("/register");
@@ -80,7 +81,7 @@ export default class LoginModal extends Vue {
       })
       .then((data) => {
         if (data) {
-          console.log(data);
+          this.$store.dispatch("whoami");
           this.$router.push("/");
         }
       })

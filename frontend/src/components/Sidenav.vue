@@ -1,16 +1,25 @@
 <template>
-  <div class="sidenav" :style="sidenavWidth">
-    <button
-      @click="closeNavbar"
-      type="button"
-      class="nav-close-button"
-      aria-label="Close"
-    >
-      X
-    </button>
-    <p v-for="(item, i) of sideItems" :key="`${item.name}+${i}`">
-      <a @click="goToRoute(item.route)" class="nav-link"> {{ item.name }} </a>
-    </p>
+  <div>
+    <div class="sidenav" :style="sidenavWidth">
+      <p>
+        {{
+          user.roles.includes("guest")
+            ? `Welcome ${user.username}`
+            : user.username
+        }}
+      </p>
+      <button
+        @click="closeNavbar"
+        type="button"
+        class="nav-close-button"
+        aria-label="Close"
+      >
+        X
+      </button>
+      <p v-for="(item, i) of sideItems" :key="`${item.name}+${i}`">
+        <a @click="goToRoute(item.route)" class="nav-link"> {{ item.name }} </a>
+      </p>
+    </div>
   </div>
 </template>
 
@@ -51,9 +60,17 @@ export default class Sidenav extends Vue {
   $store: any;
 
   get sideItems() {
-    return this.default_sideitems.filter(
-      (item) => item.premission === "guest" || item.premission === "all"
-    ); //Works for now, filter sideItems depending on premission
+    let list: any[] = [];
+    this.user.roles.forEach((role: string) => {
+      list = this.default_sideitems.filter((item: any) => {
+        return item.premission === role || item.premission === "all";
+      });
+    });
+    return list;
+  }
+
+  get user() {
+    return this.$store.state.currentUser;
   }
 
   get sidenavState() {
@@ -69,6 +86,10 @@ export default class Sidenav extends Vue {
   goToRoute(route: string): void {
     this.$store.commit("toggleSidenav");
     if (this.$route.path === route) return;
+    if (route === "/log-out") {
+      this.$store.dispatch("logoutUser");
+      return;
+    }
     this.$router.push(route);
   }
 

@@ -19,7 +19,9 @@ import { Component, Watch } from "vue-property-decorator";
   },
 })
 export default class App extends Vue {
-
+  created() {
+    this.$store.dispatch("whoami");
+  }
 }
 </script>
 
@@ -30,5 +32,6 @@ export default class App extends Vue {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  overflow-x: hidden;
 }
 </style>

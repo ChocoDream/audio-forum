@@ -1,9 +1,16 @@
 <template>
-  <li class="post-info list-group-item">
-    <div class="row">
+  <li
+    class="post-info list-group-item"
+    :class="{ 'list-group-item-warning': post.isModeratorPost === 1 }"
+  >
+    <div class="row mb-2">
       <div class="col align-self-start col-3">
         <div class="row">
-          <div class="col-align-self-start col-2"><i>M</i></div>
+          <div class="col-align-self-start col-2">
+            <span class="material-icons" v-if="post.isModeratorPost === 1"
+              >gavel</span
+            >
+          </div>
           <div class="col align-self-end col-10">{{ post.timestamp }}</div>
         </div>
       </div>

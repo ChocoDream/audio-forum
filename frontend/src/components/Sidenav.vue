@@ -1,8 +1,11 @@
 <template>
   <div class="sidenav" :style="sidenavWidth">
     <p v-for="(item, i) of sideItems" :key="`${item.name}+${i}`">
-      <a @click="goToRoute(item.route)"> {{ item.name }} </a>
+      <a @click="goToRoute(item.route)" class="nav-link"> {{ item.name }} </a>
     </p>
+    <div>
+
+    </div>
   </div>
 </template>
 
@@ -86,6 +89,9 @@ export default class Sidenav extends Vue {
   }
   a:hover {
     background-color: #f1f1f1;
+  }
+  .nav-link:hover{
+    cursor: pointer;
   }
 }
 </style>

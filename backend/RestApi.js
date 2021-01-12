@@ -283,9 +283,9 @@ module.exports = class RestApi {
       try {
         const state = statement.run(body);
         addRole.run({ userId: state.lastInsertRowid });
-        res.json(state);
+        res.status("201").json(state);
       } catch (e) {
-        console.error(e);
+        res.status("400").json({ error: e + "" });
       }
     });
 

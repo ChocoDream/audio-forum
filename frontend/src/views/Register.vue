@@ -111,7 +111,7 @@ export default class Register extends Vue {
   justify-content: center;
   grid-template-columns: 1fr;
   row-gap: 4%;
-
+  padding-bottom: 20vh;
   h2 {
     text-align: center;
   }

@@ -29,8 +29,8 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    async fetchSubForums({ commit }) {
-      const result = await fetch("/api/subforums");
+    async fetchSubForums({ commit }, id = '') {
+      const result = await fetch(`/api/subforums/${id}`);
       commit("setSubForums", await result.json());
     },
     async fetchThreadsWithSubForumId({ commit }, id) {
@@ -49,7 +49,7 @@ export default new Vuex.Store({
           this.commit("setCurrentUser", { username: "Guest", roles: ["guest"] });
         })
         .catch((error) => {
-          console.error(error);
+          console.log(error);
         });
     },
     async whoami({ commit }) {

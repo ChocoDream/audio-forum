@@ -34,7 +34,7 @@
         required
       />
       <p class="text-danger" v-show="errorMessage">{{ errorMessage }}</p>
-      
+
       <button class="btn btn-primary" type="submit" value="submit">
         Log in
       </button>
@@ -58,7 +58,7 @@ export default class LoginModal extends Vue {
     this.$router.push("/register");
   }
 
-  async login(e: any) {
+  login(e: any) {
     const user = {
       email: e.target.inputEmail.value,
       password: e.target.inputPassword.value,

@@ -6,7 +6,7 @@
     <div class="row mb-2">
       <div class="col align-self-start col-3">
         <div class="row">
-          <div class="col-align-self-start col-2">
+          <div class="col align-self-start col-2">
             <span class="material-icons" v-if="post.isModeratorPost === 1"
               >gavel</span
             >

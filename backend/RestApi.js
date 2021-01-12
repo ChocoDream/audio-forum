@@ -80,6 +80,17 @@ module.exports = class RestApi {
       if (b.password) {
         b.password = Encrypt.multiEncrypt(b.password);
       }
+      if ((table = "posts")) {
+        const body = req.body;
+        b = {
+          content: body.content,
+          userId: Number(body.userId),
+          timestamp: new Date().toISOString().slice(0, 19).replace("T", " "),
+          threadId: Number(body.threadId),
+          isModeratorPost: Number(body.isModeratorPost),
+        };
+      }
+      console.log(b);
       // Build the statement according to the keys
       // in the request body
       let statement = this.db.prepare(`
@@ -90,7 +101,7 @@ module.exports = class RestApi {
       try {
         res.status("201").json(statement.run(b));
       } catch (e) {
-        res.json({ error: e + "" });
+        res.status("400").json({ error: e + "" });
       }
     });
   }

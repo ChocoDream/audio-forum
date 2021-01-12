@@ -66,7 +66,7 @@ module.exports = class RestApi {
       if (result) {
         delete result.password;
       }
-      if (result) res.status("200").json(result);
+      if (result.length > 0) res.status("200").json(result);
       else if (result.hasOwnProperty("error")) res.status("400").json(result);
       else res.status("404").json(result);
     });
@@ -214,8 +214,11 @@ module.exports = class RestApi {
       } catch (e) {
         result = { error: e + "" };
       }
-      res.json(result);
+      if (result.length > 0) res.status("200").json(result);
+      else if (result.hasOwnProperty("error")) res.status("400").json(result);
+      else res.status("404").json(result);
     });
+
     this.app.get(this.prefix + "users/:id", (req, res) => {
       const statement = this.db.prepare(`
       SELECT 
@@ -260,8 +263,11 @@ module.exports = class RestApi {
       if (result) {
         delete result.password;
       }
-      res.json(result);
+      if (!result.hasOwnProperty("error")) res.status("200").json(result);
+      else if (result.hasOwnProperty("error")) res.status("400").json(result);
+      else res.status("404").json(result);
     });
+
     this.app.post(this.prefix + "users", (req, res) => {
       const body = req.body;
       if (body.password) {
@@ -282,6 +288,7 @@ module.exports = class RestApi {
         console.error(e);
       }
     });
+
     this.app.put(this.prefix + "users", (req, res) => {
       //UPDATE USER
     });

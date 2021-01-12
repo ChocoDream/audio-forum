@@ -13,8 +13,10 @@
         type="email"
         id="inputEmail"
         class="form-control"
+        :class="{ 'is-invalid': errorMessage }"
         placeholder="Enter email"
         pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
+        @change="errorMessage = ''"
         required
       />
       <label for="inputPassword">
@@ -26,9 +28,12 @@
         type="password"
         id="inputPassword"
         class="form-control"
+        :class="{ 'is-invalid': errorMessage }"
         placeholder="Enter password"
+        @change="errorMessage = ''"
         required
       />
+      <p class="text-danger">{{ errorMessage }}</p>
       <button class="btn btn-primary" type="submit" value="submit">
         Log in
       </button>
@@ -47,13 +52,40 @@ import { Component } from "vue-property-decorator";
 @Component
 export default class LoginModal extends Vue {
   $router: any;
+  errorMessage = "";
   registerUser() {
     this.$router.push("/register");
   }
 
-  login(e: any) {
-    const user = {email: e.target.inputEmail.value, password: e.target.inputPassword.value}
+  async login(e: any) {
+    const user = {
+      email: e.target.inputEmail.value,
+      password: e.target.inputPassword.value,
+    };
+    this.attemptLogin(user);
+  }
 
+  async attemptLogin(user: object) {
+    await fetch("/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "Application/json",
+      },
+      body: JSON.stringify(user),
+    })
+      .then((response) => {
+        if (response.ok) return response.json();
+        else this.errorMessage = "Wrong Password or Email";
+      })
+      .then((data) => {
+        if (data) {
+          console.log(data);
+          this.$router.push("/");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 }
 </script>
@@ -72,6 +104,10 @@ export default class LoginModal extends Vue {
   .wrapper-form {
     width: 50%;
     justify-self: center;
+    .text-danger {
+      margin-top: 3vh;
+      font-size: 16px;
+    }
     .btn {
       margin-top: 10vh;
       width: 80%;

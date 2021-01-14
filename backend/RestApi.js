@@ -196,7 +196,7 @@ module.exports = class RestApi {
     // GET - check if logged in and return user if so
     this.app.get(this.prefix + "login", (req, res) => {
       if (req.session.user) res.status("200").json(req.session.user);
-      //else res.status("404").json(null);
+      else res.status("404").json(null);
     });
 
     // DELETE - logged out a logged in user

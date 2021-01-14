@@ -17,7 +17,6 @@ module.exports = {
     return true;
   },
   users(user, method, req) {
-    // Allow everyone to create a user if the userRole is basicUser
     if (method === "POST") {
       return true;
     }
@@ -26,17 +25,14 @@ module.exports = {
       return true;
     }
     // Allow admins to change info about a user
-    if (method === "PUT" && user.roles === "adminstrator") {
+    if (method === "PUT" && user.roles.includes("adminstrator")) {
       return true;
     }
     // Allow a user to change info about him/herself
     // (the split pop thing is how we get the id from the url
     // since we do not have req.params available in middleware)
-    if (method === "PUT" && +req.url.split("/").pop() === user.id) {
-      return true;
-    }
     // Allow admins to delete users
-    if (method === "DELETE" && user.roles === "adminstrator") {
+    if (method === "DELETE" && user.roles.includes("adminstrator")) {
       return true;
     }
     return false; // otherwise do not allow the request
@@ -49,6 +45,6 @@ module.exports = {
     return true;
   },
   postthread() {
-    return true
-  }
+    return true;
+  },
 };

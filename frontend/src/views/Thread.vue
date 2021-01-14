@@ -1,6 +1,12 @@
 <template>
   <div class="container thread">
-    <button class="btn btn-info" @click="toggleModal">Create Post</button>
+    <button
+      class="btn btn-info"
+      @click="toggleModal"
+      :disabled="user.roles.includes('guest')"
+    >
+      Create Post
+    </button>
     <button class="btn btn-warning">Lock Thread</button>
     <button class="btn btn-danger">Delete Thread</button>
     <ul class="list-group">

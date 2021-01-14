@@ -61,11 +61,13 @@ export default class Sidenav extends Vue {
 
   get sideItems() {
     let list: any[] = [];
-    this.user.roles.forEach((role: string) => {
-      list = this.default_sideitems.filter((item: any) => {
-        return item.premission === role || item.premission === "all";
+    if (this.user) {
+      this.user.roles.forEach((role: string) => {
+        list = this.default_sideitems.filter((item: any) => {
+          return item.premission === role || item.premission === "all";
+        });
       });
-    });
+    } else list = [];
     return list;
   }
 

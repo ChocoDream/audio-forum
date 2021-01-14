@@ -87,7 +87,7 @@ export default class Register extends Vue {
       body: JSON.stringify(user),
     })
       .then((response) => {
-        if (response.ok) return response.json();
+        if (response.status === 201) return response.json();
         else if (response.status === 400) {
           this.errorMessage = "Email or Username already exists";
         }

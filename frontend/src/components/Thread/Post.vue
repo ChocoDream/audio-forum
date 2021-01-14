@@ -11,10 +11,14 @@
               >gavel</span
             >
           </div>
-          <div class="col align-self-end col-10">{{ post.timestamp }}</div>
+          <div class="col align-self-end col-10">
+            <strong>{{ post.timestamp }}</strong>
+          </div>
         </div>
       </div>
-      <div class="col align-self-end col-9"></div>
+      <div class="col align-self-end offset-7 col-2">
+        <p>#3</p>
+      </div>
     </div>
     <div class="row">
       <div class="col align-self-start col-3">{{ user.username }}</div>

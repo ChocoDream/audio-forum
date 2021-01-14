@@ -26,10 +26,19 @@ import { Component } from "vue-property-decorator";
 @Component
 export default class NewPost extends Vue {
   $emit: any;
+  $store: any;
   content = "";
   warning = false;
   closeModal() {
     this.$emit("closeModal");
+  }
+/*   get isModerator() {
+    let state = false;
+    if(this.user.roles.includes('moderator') || this.user)
+  } */
+
+  get user() {
+    return this.$store.state.currentUser;
   }
   sendDataToParent() {
     this.$emit("sendDataToParent", {

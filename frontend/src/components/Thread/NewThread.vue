@@ -1,5 +1,7 @@
 <template>
-  
+  <div>
+    
+  </div>
 </template>
 
 <script>
@@ -11,6 +13,6 @@ export default class NewThread extends Vue {
 }
 </script>
 
-<style>
+<style scoped lang="scss">
 
 </style>

@@ -3,7 +3,7 @@
     <button
       class="btn btn-info"
       @click="toggleModal"
-      :disabled="user.roles.includes('guest')"
+      :disabled="isUserGuest"
     >
       Create Post
     </button>
@@ -47,6 +47,10 @@ export default class Thread extends Vue {
 
   get user() {
     return this.$store.state.currentUser;
+  }
+
+  get isUserGuest() {
+    return this.user.roles.includes("guest")
   }
 
   toggleModal() {

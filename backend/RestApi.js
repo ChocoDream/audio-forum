@@ -90,7 +90,6 @@ module.exports = class RestApi {
           isModeratorPost: Number(body.isModeratorPost),
         };
       }
-      console.log(b);
       // Build the statement according to the keys
       // in the request body
       let statement = this.db.prepare(`

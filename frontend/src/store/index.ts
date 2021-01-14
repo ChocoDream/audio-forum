@@ -29,7 +29,7 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    async fetchSubForums({ commit }, id = '') {
+    async fetchSubForums({ commit }, id = "") {
       const result = await fetch(`/api/subforums/${id}`);
       commit("setSubForums", await result.json());
     },
@@ -46,7 +46,10 @@ export default new Vuex.Store({
         method: "DELETE",
       })
         .then((res) => {
-          this.commit("setCurrentUser", { username: "Guest", roles: ["guest"] });
+          this.commit("setCurrentUser", {
+            username: "Guest",
+            roles: ["guest"],
+          });
         })
         .catch((error) => {
           console.log(error);
@@ -59,7 +62,9 @@ export default new Vuex.Store({
         })
           .then((response) => {
             if (response.ok) return response.json();
-            else return { username: "Guest", roles: ["guest"] };
+            else if (response.status === 404) {
+              return { username: "Guest", roles: ["guest"] };
+            }
           })
           .then((data) => {
             this.commit("setCurrentUser", data);

@@ -1,7 +1,6 @@
 const sqlite3 = require("better-sqlite3");
 const Encrypt = require("./logic/Encrypt");
 const path = require("path");
-const path = require("path");
 
 module.exports = class RestApi {
   constructor(

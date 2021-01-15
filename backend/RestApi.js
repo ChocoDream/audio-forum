@@ -6,7 +6,7 @@ module.exports = class RestApi {
   constructor(
     expressApp,
     urlPrefix = "/api/",
-    pathToDb = path.join(__dirname, "../database.db")
+    pathToDb = path.join(__dirname, "./database.db")
   ) {
     this.app = expressApp;
     this.db = sqlite3(pathToDb);

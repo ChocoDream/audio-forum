@@ -1,8 +1,14 @@
 const sqlite3 = require("better-sqlite3");
 const Encrypt = require("./logic/Encrypt");
+const path = require("path");
+const path = require("path");
 
 module.exports = class RestApi {
-  constructor(expressApp, urlPrefix = "/api/", pathToDb = "./database.db") {
+  constructor(
+    expressApp,
+    urlPrefix = "/api/",
+    pathToDb = path.join(__dirname, "../database.db")
+  ) {
     this.app = expressApp;
     this.db = sqlite3(pathToDb);
     this.prefix = urlPrefix;

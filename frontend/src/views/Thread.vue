@@ -1,10 +1,6 @@
 <template>
   <div class="container thread">
-    <button
-      class="btn btn-info"
-      @click="toggleModal"
-      :disabled="isUserGuest"
-    >
+    <button class="btn btn-info" @click="toggleModal" :disabled="isUserGuest">
       Create Post
     </button>
     <button class="btn btn-warning">Lock Thread</button>
@@ -50,7 +46,7 @@ export default class Thread extends Vue {
   }
 
   get isUserGuest() {
-    return this.user.roles.includes("guest")
+    return this.user.roles.includes("guest");
   }
 
   toggleModal() {

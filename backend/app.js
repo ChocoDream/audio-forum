@@ -1,6 +1,7 @@
 const express = require("express");
 const session = require("express-session");
 const store = require("better-express-store");
+const path = require("path");
 
 const app = express();
 const RestApi = require("./RestApi");
@@ -25,7 +26,7 @@ app.use((error, req, res, next) => {
 // Add Express-session as middleware
 app.use(
   session({
-    secret: require("./logic/session-secret.json"),
+    secret: require(path.join(__dirname, "/logic/session-secret.json")),
     resave: false,
     saveUninitialized: true,
     cookie: { secure: "auto" },

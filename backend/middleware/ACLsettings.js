@@ -20,7 +20,7 @@ module.exports = {
     if (method === "POST") {
       return true;
     }
-    // Allow all logged in users to a see a list of other users
+
     if (method === "GET") {
       return true;
     }
@@ -41,10 +41,10 @@ module.exports = {
     // Everyone should always be allowd to try to login and to logout
     return true;
   },
-  threadsubforum() {
+  threadssubforum() {
     return true;
   },
-  postthread() {
+  poststhread(user, method, req) {
     return true;
   },
 };

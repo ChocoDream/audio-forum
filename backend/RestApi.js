@@ -14,7 +14,7 @@ module.exports = class RestApi {
     let tables = this.getAllTables();
     for (let table of tables) {
       if (table === "users") {
-        //SPECIFIES WHAT GENERIC ROUTES I WILL ALLOW
+        //SKIP users in generic tables loop
 
         continue;
       }
@@ -27,8 +27,8 @@ module.exports = class RestApi {
 
     this.addLoginRoutes();
     this.addUserRoutes();
-    this.addChildToParentRoutes("thread", "subForum", "threads");
-    this.addChildToParentRoutes("post", "thread", "posts");
+    this.addChildToParentRoutes("threads", "subForum", "threads");
+    this.addChildToParentRoutes("posts", "thread", "posts");
   }
 
   getAllTables() {
@@ -48,11 +48,23 @@ module.exports = class RestApi {
       /*let result = statement.all();
       result.forEach(x => delete x.password)
       res.json(result);*/
+      let result;
       try {
-        res.json(statement.all().map((x) => ({ ...x, password: undefined })));
+        result = statement.all().map((x) => ({ ...x, password: undefined }));
       } catch (e) {
-        res.json({ error: e + "" });
+        result = { error: e + "" };
       }
+
+      if (result.length > 0) {
+        if (table === "posts") {
+          result = result.map(
+            (post) =>
+              (post.isModeratorPost = post.isModeratorPost === 1 ? true : false)
+          );
+        }
+        res.status("200").json(result);
+      } else if (result.hasOwnProperty("error")) res.status("400").json(result);
+      else res.status("404").json(result);
     });
   }
 
@@ -71,7 +83,7 @@ module.exports = class RestApi {
       if (result) {
         delete result.password;
       }
-      if (result.length > 0) res.status("200").json(result);
+      if (!result.hasOwnProperty("error")) res.status("200").json(result);
       else if (result.hasOwnProperty("error")) res.status("400").json(result);
       else res.status("404").json(result);
     });
@@ -87,12 +99,26 @@ module.exports = class RestApi {
       }
       if ((table = "posts")) {
         const body = req.body;
+        if (typeof body.isModeratorPost != "boolean")
+          return res.status("400").json({
+            message:
+              "Expected Boolean for isModeratorPost, recieved: " +
+              body.isModeratorPost,
+          });
+        if (isNaN(body.userId))
+          return res.status("400").json({
+            message: "Expected Number for userId, recieved: " + body.userId,
+          });
+        if (isNaN(body.threadId))
+          return res.status("400").json({
+            message: "Expected Number for threadId, recieved: " + body.threadId,
+          });
         b = {
           content: body.content,
           userId: Number(body.userId),
           timestamp: new Date().toISOString().slice(0, 19).replace("T", " "),
           threadId: Number(body.threadId),
-          isModeratorPost: Number(body.isModeratorPost),
+          isModeratorPost: body.isModeratorPost ? 1 : 0,
         };
       }
       // Build the statement according to the keys
@@ -334,7 +360,7 @@ module.exports = class RestApi {
   }
 
   addChildToParentRoutes(
-    child = "thread",
+    child = "threads",
     parent = "subForum",
     table = "threads"
   ) {

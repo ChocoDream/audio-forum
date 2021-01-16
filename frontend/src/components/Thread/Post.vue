@@ -1,13 +1,13 @@
 <template>
   <li
     class="post-info list-group-item"
-    :class="{ 'list-group-item-warning': post.isModeratorPost === 1 }"
+    :class="{ 'list-group-item-info': post.isModeratorPost }"
   >
     <div class="row mb-2">
       <div class="col align-self-start col-3">
         <div class="row">
           <div class="col align-self-start col-2">
-            <span class="material-icons" v-if="post.isModeratorPost === 1"
+            <span class="material-icons" v-if="post.isModeratorPost"
               >gavel</span
             >
           </div>
@@ -17,13 +17,13 @@
         </div>
       </div>
       <div class="col align-self-end offset-7 col-2">
-        <p>#3</p>
+        <p class="text-right">#{{ index }}</p>
       </div>
     </div>
     <div class="row">
       <div class="col align-self-start col-3">{{ user.username }}</div>
       <div class="col col-9">
-        <p>{{ post.content }}</p>
+        <p class="text-left">{{ post.content }}</p>
       </div>
     </div>
   </li>
@@ -35,6 +35,7 @@ import { Component, Prop } from "vue-property-decorator";
 @Component
 export default class Post extends Vue {
   @Prop({ type: Object }) post: any;
+  @Prop({ type: Number }) index: number;
 
   user = { username: "DEFAULT" };
   async mounted() {

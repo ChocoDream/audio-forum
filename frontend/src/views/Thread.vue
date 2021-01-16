@@ -1,35 +1,27 @@
 <template>
   <div class="container thread">
-    <button class="btn btn-info" @click="toggleModal" :disabled="isUserGuest">
-      Create Post
-    </button>
-    <button class="btn btn-warning">Lock Thread</button>
-    <button class="btn btn-danger">Delete Thread</button>
     <ul class="list-group">
       <Post
         v-for="(item, i) of postData"
         :key="`${item.id}+${i}`"
         :post="item"
+        :index="i + 1"
       />
     </ul>
-    <new-post-modal
-      v-if="showModal"
-      @closeModal="toggleModal"
-      @sendDataToParent="makeNewPost"
-    />
+    <new-post @sendDataToParent="makeNewPost" :user="this.user" />
   </div>
 </template>
 
 <script lang="ts">
 import Post from "../components/Thread/Post.vue";
-import NewPostModal from "../components/Thread/NewPostModal.vue";
+import NewPost from "../components/Thread/NewPost.vue";
 
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 @Component({
   components: {
     Post,
-    NewPostModal,
+    NewPost,
   },
 })
 export default class Thread extends Vue {

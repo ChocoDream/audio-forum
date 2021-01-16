@@ -35,11 +35,6 @@ export default class Sidenav extends Vue {
       route: "/user",
     },
     {
-      name: "Home",
-      premission: "all",
-      route: "/",
-    },
-    {
       name: "Log in",
       premission: "guest",
       route: "/log-in",

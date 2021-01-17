@@ -45,7 +45,7 @@ export default class Thread extends Vue {
     const body = {
       content: data.content,
       userId: this.user.id,
-      threadId: Number(this.$route.params.thread),
+      threadId: this.$route.params.thread,
       isModeratorPost: data.warning,
     };
     await fetch("/api/posts", {

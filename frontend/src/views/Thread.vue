@@ -37,16 +37,11 @@ export default class Thread extends Vue {
     return this.$store.state.currentUser;
   }
 
-  get isUserGuest() {
-    return this.user.roles.includes("guest");
-  }
-
-  toggleModal() {
-    this.showModal = !this.showModal;
-  }
-
   async makeNewPost(data: any) {
     if (!this.user.roles.includes("user")) return; //Soft-prevent guests from posting
+    if (data.userState) {
+      return window.location.replace("https://youtu.be/m_0qHRwU_sQ?t=7");
+    }
     const body = {
       content: data.content,
       userId: this.user.id,

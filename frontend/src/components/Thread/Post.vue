@@ -8,7 +8,7 @@
         <div class="row">
           <div class="col align-self-start col-2">
             <span class="material-icons" v-if="post.isModeratorPost"
-              >gavel</span
+              >security</span
             >
           </div>
           <div class="col align-self-end col-10">
@@ -35,7 +35,7 @@ import { Component, Prop } from "vue-property-decorator";
 @Component
 export default class Post extends Vue {
   @Prop({ type: Object }) post: any;
-  @Prop({ type: Number }) index: number;
+  @Prop({ type: Number }) index: any;
 
   user = { username: "DEFAULT" };
   async mounted() {

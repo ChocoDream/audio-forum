@@ -9,6 +9,7 @@ export default new Vuex.Store({
     subForums: [],
     threads: [],
     posts: [],
+    users: [],
     sidenavState: false,
   },
   mutations: {
@@ -23,6 +24,9 @@ export default new Vuex.Store({
     },
     setPosts(state, data) {
       state.posts = data;
+    },
+    setUsers(state, data) {
+      state.users = data;
     },
     toggleSidenav(state) {
       state.sidenavState = !state.sidenavState;
@@ -40,6 +44,10 @@ export default new Vuex.Store({
     async fetchPostsWithThreadId({ commit }, id) {
       const result = await fetch(`/api/poststhread/${id}`);
       commit("setPosts", await result.json());
+    },
+    async fetchUsers({ commit }) {
+      const result = await fetch(`/api/users`);
+      commit("setUsers", await result.json());
     },
     async logoutUser({ commit }) {
       await fetch("/api/login", {

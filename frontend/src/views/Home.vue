@@ -25,8 +25,7 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 
 @Component({
-  components: {
-  },
+  components: {},
 })
 export default class Home extends Vue {
   $store: any;

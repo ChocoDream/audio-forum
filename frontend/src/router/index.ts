@@ -41,6 +41,12 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/Profile.vue"),
     meta: { requiresAuth: true },
   },
+  {
+    path: "/security",
+    name: "Security",
+    component: () => import("../views/Security.vue"),
+    meta: { requireAuth: true, requiresAdmin: true },
+  },
 ];
 
 const router = new VueRouter({
@@ -48,20 +54,24 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (to.matched.some((record) => record.meta.requiresAdmin)) {
-      if (store.state.currentUser.roles.includes("adminstrator")) {
-        next();
-        return;
+  if (
+    to.matched.some((record) => record.meta.requiresAuth) ||
+    to.matched.some((record) => record.meta.requiresAdmin)
+  ) {
+    const user = store.state.currentUser;
+    if (user.roles.includes("guest")) {
+      next({ name: "Login" });
+    } else {
+      if (to.matched.some((record) => record.meta.requiresAdmin)) {
+        if (user.roles.includes("adminstrator")) {
+          next();
+        } else {
+          next("/");
+        }
       } else {
-        //Send user to forbidden page
-        next("/");
+        next();
       }
-    } else if (store.state.currentUser.roles.includes("user")) {
-      next();
-      return;
     }
-    next("/log-in");
   } else {
     next();
   }

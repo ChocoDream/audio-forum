@@ -18,15 +18,19 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 // @ is an alias to /src
+
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 
 @Component({
-  components: {},
+  components: {
+  },
 })
 export default class Home extends Vue {
+  $store: any;
+  $router: any;
   get subForumData() {
     return this.$store.state.subForums;
   }
@@ -35,7 +39,7 @@ export default class Home extends Vue {
     this.$store.dispatch("fetchSubForums");
   }
 
-  goToRoute(route) {
+  goToRoute(route: string) {
     this.$router.push(`/forum/${route}`);
   }
 }

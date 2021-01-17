@@ -56,12 +56,6 @@ module.exports = class RestApi {
       }
 
       if (result.length > 0) {
-        if (table === "posts") {
-          result = result.map(
-            (post) =>
-              (post.isModeratorPost = post.isModeratorPost === 1 ? true : false)
-          );
-        }
         res.status("200").json(result);
       } else if (result.hasOwnProperty("error")) res.status("400").json(result);
       else res.status("404").json(result);

@@ -47,4 +47,10 @@ module.exports = {
   poststhread(user, method, req) {
     return true;
   },
+  countposts(method, req) {
+    return true;
+  },
+  countthreads() {
+    return true;
+  },
 };

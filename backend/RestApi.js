@@ -27,8 +27,8 @@ module.exports = class RestApi {
 
     this.addLoginRoutes();
     this.addUserRoutes();
-    this.addChildToParentRoutes("threads", "subForum", "threads");
-    this.addChildToParentRoutes("posts", "thread", "posts");
+    this.addChildToParentRoutes("threads", "subForum");
+    this.addChildToParentRoutes("posts", "thread");
   }
 
   getAllTables() {
@@ -359,28 +359,37 @@ module.exports = class RestApi {
     });
   }
 
-  addChildToParentRoutes(
-    child = "threads",
-    parent = "subForum",
-    table = "threads"
-  ) {
-    this.app.get(
-      this.prefix + `${child}${parent.toLowerCase()}/:id`,
-      (req, res) => {
-        let statement = this.db.prepare(`
+  addChildToParentRoutes(table, parent) {
+    this.app.get(this.prefix + `${table}${parent}/:id`, (req, res) => {
+      let statement = this.db.prepare(`
         SELECT * FROM ${table}
         WHERE ${parent + "Id"} = $id
       `);
-        let result;
-        try {
-          result = statement.all(req.params) || null;
-        } catch (e) {
-          result = { error: e + "" };
-        }
-        if (result.length > 0) res.status("200").json(result);
-        else if (result.hasOwnProperty("error")) res.status("400").json(result);
-        else res.status("404").json(result);
+      let result;
+      try {
+        result = statement.all(req.params) || null;
+      } catch (e) {
+        result = { error: e + "" };
       }
-    );
+      if (result.length > 0) res.status("200").json(result);
+      else if (result.hasOwnProperty("error")) res.status("400").json(result);
+      else res.status("404").json(result);
+    });
+
+    this.app.get(this.prefix + `count${table}/:id`, (req, res) => {
+      let statement = this.db.prepare(`
+      SELECT COUNT(*) items FROM ${table}
+      WHERE ${table}.${parent + "Id"} = $id`);
+      let result;
+      try {
+        result = statement.get(req.params) || null;
+      } catch (e) {
+        result = { error: e + "" };
+      }
+
+      if (!result.hasOwnProperty("error")) res.status("200").json(result);
+      else if (result.hasOwnProperty("error")) res.status("400").json(result);
+      else res.status("404").json(result);
+    });
   }
 };

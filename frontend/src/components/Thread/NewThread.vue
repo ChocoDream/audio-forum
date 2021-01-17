@@ -19,7 +19,7 @@
                 aria-describedby="NameOfThread"
                 placeholder="New Thread..."
                 :disabled="isGuest"
-                :value="isGuest ? 'Log in to post' : ''"
+                v-model="content"
                 required
               />
             </div>
@@ -32,7 +32,7 @@
             @click="createThread"
             :disabled="isGuest"
           >
-            Create Thread
+            {{ isGuest ? "Log in to post" : "Create Thread" }}
           </button>
         </div>
       </div>
@@ -45,15 +45,24 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 @Component
 export default class NewThread extends Vue {
-  @Prop({ type: Object }) isGuest: any;
-  name = "";
+  $store: any;
+  content = "";
 
   closeModal() {
     this.$emit("closeModal");
   }
 
   createThread() {
-    this.$emit("sendDataToParent", name);
+    if (this.isGuest) return;
+    this.$emit("sendDataToParent", this.content);
+  }
+
+  get isGuest() {
+    if (this.$store.state.currentUser.roles.includes("guest")) {
+      this.content = "Guests can't create new threads...";
+      return true;
+    }
+    return false;
   }
 }
 </script>

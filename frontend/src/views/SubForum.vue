@@ -10,13 +10,26 @@
         class="list-group-item item"
         @click="goToRoute(item.id)"
       >
-        <div class="d-flex justify-content-between">
-          <h4 class="item-title">
-            {{ item.title }}
-          </h4>
-          <span>
-            <!--ADD ICON-->
-          </span>
+        <div class="row">
+          <div class="col col-5">
+            <div class="row">
+              <div class="col col-1">
+                <span class="material-icons" @click="lockThread">
+                  {{ item.isLocked ? "lock" : "lock_open" }}
+                </span>
+              </div>
+              <div class="col col-11">
+                <h4 class="item-title text-left">
+                  {{ item.title }}
+                </h4>
+              </div>
+            </div>
+          </div>
+          <div class="col col-7">
+            <span>
+              <!--ADD ICON-->
+            </span>
+          </div>
         </div>
       </li>
     </ul>
@@ -55,6 +68,10 @@ export default class SubForum extends Vue {
 
   goToRoute(id: any) {
     this.$router.push(`${this.currentRoute()}/${id}`);
+  }
+
+  lockThread(id: any) {
+    return "";
   }
 
   async makeNewThread(data: any) {

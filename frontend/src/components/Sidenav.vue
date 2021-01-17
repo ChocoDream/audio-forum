@@ -1,21 +1,13 @@
 <template>
   <div>
-    <div class="sidenav" :style="sidenavWidth">
-      <p>
+    <div class="sidenav" :style="sidenavWidth" @click.self="closeSidenav">
+      <h2>
         {{
           user.roles.includes("guest")
             ? `Welcome ${user.username}`
             : user.username
         }}
-      </p>
-      <button
-        @click="closeNavbar"
-        type="button"
-        class="nav-close-button"
-        aria-label="Close"
-      >
-        X
-      </button>
+      </h2>
       <p v-for="(item, i) of sideItems" :key="`${item.name}+${i}`">
         <a @click="goToRoute(item.route)" class="nav-link"> {{ item.name }} </a>
       </p>
@@ -99,7 +91,7 @@ export default class Sidenav extends Vue {
     this.$router.push(route);
   }
 
-  closeNavbar() {
+  closeSidenav() {
     this.$store.commit("toggleSidenav");
   }
 }

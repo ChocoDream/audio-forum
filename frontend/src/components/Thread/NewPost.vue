@@ -4,23 +4,42 @@
       <fieldset>
         <legend class="header">
           <h2 class="text-left">
-            Reply
+            New Post
           </h2>
         </legend>
         <div class="form-group">
-          <textarea class="form-control content-text" rows="5"></textarea>
+          <textarea
+            class="form-control content-text"
+            rows="5"
+            :disabled="isGuest"
+            v-model="content"
+          >
+          </textarea>
         </div>
         <div class="row">
-          <div class="form-group col col-4 offset-8">
-            <span class="pr-4">
-              <input type="checkbox" id="moderatorCheckbox" />
-              <label for="moderatorCheckbox" class="form-check-label pl-1"
-                >Mark as warning post</label
-              >
-            </span>
-            <button class="btn btn-info " @click="sendDataToParent">
-              Send <span class="material-icons align-middle">send</span>
-            </button>
+          <div class="form-group col col-5 offset-7">
+            <div class="row">
+              <div class="col col-8" v-if="isModerator">
+                <input
+                  type="checkbox"
+                  id="moderatorCheckbox"
+                  v-model="warning"
+                />
+                <label for="moderatorCheckbox" class="form-check-label pl-1"
+                  >Mark as warning post
+                </label>
+              </div>
+              <div class="col col-4" :class="{ 'offset-8': !isModerator }">
+                <button
+                  class="btn btn-info"
+                  :disabled="isGuest"
+                  @click="createPost"
+                >
+                  <i class="material-icons align-middle">send</i>
+                  Send
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </fieldset>
@@ -55,10 +74,19 @@ export default class NewPost extends Vue {
     return false;
   }
 
-  sendDataToParent() {
+  get isGuest() {
+    if (this.user.roles.includes("guest")) {
+      this.content = "Log in to join the conversation";
+      return true;
+    }
+    return false;
+  }
+
+  createPost() {
     this.$emit("sendDataToParent", {
       content: this.content,
       warning: this.warning,
+      userState: this.isGuest,
     });
   }
 }
@@ -67,6 +95,7 @@ export default class NewPost extends Vue {
 <style scoped lang="scss">
 .new-post-wrapper {
   padding-top: 3vh;
+  padding-bottom: 5vh;
 }
 
 .content-text {

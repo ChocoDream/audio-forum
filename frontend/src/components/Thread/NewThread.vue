@@ -45,7 +45,7 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 @Component
 export default class NewThread extends Vue {
-  @Prop({ type: Object }) isGuest: boolean;
+  @Prop({ type: Object }) isGuest: any;
   name = "";
 
   closeModal() {

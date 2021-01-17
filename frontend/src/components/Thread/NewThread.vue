@@ -18,6 +18,8 @@
                 id="threadNameInput"
                 aria-describedby="NameOfThread"
                 placeholder="New Thread..."
+                :disabled="isGuest"
+                :value="isGuest ? 'Log in to post' : ''"
                 required
               />
             </div>
@@ -25,7 +27,11 @@
         </div>
         <div class="modal-footer">
           <button class="btn btn-danger" @click="closeModal">Cancel</button>
-          <button class="btn btn-primary" @click="createThread">
+          <button
+            class="btn btn-primary"
+            @click="createThread"
+            :disabled="isGuest"
+          >
             Create Thread
           </button>
         </div>
@@ -36,9 +42,10 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { Component, Prop } from "vue-property-decorator";
 @Component
 export default class NewThread extends Vue {
+  @Prop({ type: Object }) isGuest: boolean;
   name = "";
 
   closeModal() {

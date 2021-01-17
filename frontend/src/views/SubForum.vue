@@ -1,6 +1,6 @@
 <template>
   <div class="container subforum">
-    <button class="btn btn-primary" @click="toggleModal">
+    <button class="btn btn-primary" v-if="!isGuest" @click="toggleModal">
       New Thread
     </button>
 
@@ -28,6 +28,7 @@
       v-if="modalState"
       @sendDataToParent="makeNewThread"
       @closeModal="toggleModal"
+      :guest="isGuest"
     />
   </div>
 </template>
@@ -69,6 +70,14 @@ export default class SubForum extends Vue {
       "fetchThreadsWithSubForumId",
       this.$route.params.subforum
     );
+  }
+
+  get user() {
+    return this.$store.state.currentUser;
+  }
+
+  get isGuest() {
+    return this.user.roles.includes("guest");
   }
 
   get threadData() {

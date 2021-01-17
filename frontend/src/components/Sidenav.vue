@@ -32,7 +32,7 @@ export default class Sidenav extends Vue {
     {
       name: "My Profile",
       premission: "user",
-      route: "/user",
+      route: "/profile",
     },
     {
       name: "Security",

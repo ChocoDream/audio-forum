@@ -35,6 +35,11 @@ export default class Sidenav extends Vue {
       route: "/user",
     },
     {
+      name: "Security",
+      premission: "adminstrator",
+      route: "/security",
+    },
+    {
       name: "Log in",
       premission: "guest",
       route: "/log-in",
@@ -56,11 +61,15 @@ export default class Sidenav extends Vue {
 
   get sideItems() {
     let list: any[] = [];
+    //TODO FIX, can only get out items with either user or guest, not moderator or adminstrator. please fix
     if (this.user) {
       this.user.roles.forEach((role: string) => {
-        list = this.default_sideitems.filter((item: any) => {
-          return item.premission === role || item.premission === "all";
-        });
+        const listToAdd = this.default_sideitems.filter(
+          (item: { name: string; premission: string; route: string }) => {
+            return item.premission === role || item.premission === "all";
+          }
+        );
+        list = list.concat(listToAdd);
       });
     } else list = [];
     return list;

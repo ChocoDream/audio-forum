@@ -97,7 +97,7 @@ module.exports = class RestApi {
       if (b.password) {
         b.password = Encrypt.multiEncrypt(b.password);
       }
-      if ((table = "posts")) {
+      if (table === "posts") {
         const body = req.body;
         if (typeof body.isModeratorPost != "boolean")
           return res.status("400").json({
@@ -119,6 +119,20 @@ module.exports = class RestApi {
           timestamp: new Date().toISOString().slice(0, 19).replace("T", " "),
           threadId: Number(body.threadId),
           isModeratorPost: body.isModeratorPost ? 1 : 0,
+        };
+      } else if (table === "threads") {
+        const body = req.body;
+        if (isNaN(body.subForumId)) {
+          return res.status("400").json({
+            message:
+              "Expected Number for subForumId, recieved: " + body.subForumId,
+          });
+        }
+        b = {
+          title: body.content,
+          subForumId: Number(body.subForumId),
+          isLocked: 0,
+          isHot: 0,
         };
       }
       // Build the statement according to the keys
@@ -387,7 +401,8 @@ module.exports = class RestApi {
         result = { error: e + "" };
       }
 
-      if (!result.hasOwnProperty("error")) res.status("200").json(result);
+      if (!result.hasOwnProperty("error") || result.length === 0)
+        res.status("200").json(result);
       else if (result.hasOwnProperty("error")) res.status("400").json(result);
       else res.status("404").json(result);
     });

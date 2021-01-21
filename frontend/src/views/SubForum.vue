@@ -14,9 +14,7 @@
           <div class="col col-5">
             <div class="row">
               <div class="col col-1">
-                <span class="material-icons" @click="lockThread">
-                  {{ item.isLocked ? "lock" : "lock_open" }}
-                </span>
+                <lock :stateFromParent="false" />
               </div>
               <div class="col col-11">
                 <h4 class="item-title text-left">
@@ -26,9 +24,12 @@
             </div>
           </div>
           <div class="col col-7">
-            <span>
-              <!--ADD ICON-->
-            </span>
+            <div class="row">
+              <div class="col offset-10 col-2">
+                <span>2222</span>
+                <span class="pl-1 material-icons align-middle">message</span>
+              </div>
+            </div>
           </div>
         </div>
       </li>
@@ -44,12 +45,14 @@
 
 <script lang="ts">
 import NewThread from "../components/Thread/NewThread.vue";
+import Lock from "../components/Lock.vue";
 
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 @Component({
   components: {
     NewThread,
+    Lock,
   },
 })
 export default class SubForum extends Vue {
@@ -71,6 +74,7 @@ export default class SubForum extends Vue {
   }
 
   lockThread(id: any) {
+    console.log("hello");
     return "";
   }
 
@@ -127,5 +131,16 @@ export default class SubForum extends Vue {
 }
 .item:hover {
   background-color: lightblue;
+}
+
+.lock-icon-btn {
+  cursor: pointer;
+  color: lightgray;
+  &:hover {
+    color: red;
+  }
+  .active {
+    color: yellow;
+  }
 }
 </style>

@@ -76,6 +76,7 @@ import { Component } from "vue-property-decorator";
 })
 export default class Security extends Vue {
   $store: any;
+
   get users() {
     return this.$store.state.users;
   }

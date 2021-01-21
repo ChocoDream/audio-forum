@@ -11,6 +11,8 @@ export default new Vuex.Store({
     posts: [],
     users: [],
     sidenavState: false,
+    isModerator: false,
+    isGuest: true,
   },
   mutations: {
     setCurrentUser(state, data) {
@@ -30,6 +32,9 @@ export default new Vuex.Store({
     },
     toggleSidenav(state) {
       state.sidenavState = !state.sidenavState;
+    },
+    setIsModerator(state, data) {
+      state.isModerator = data;
     },
   },
   actions: {
@@ -70,7 +75,7 @@ export default new Vuex.Store({
         })
           .then((response) => {
             if (response.ok) return response.json();
-            else if (response.status === 404) {
+            else if (response.status === 400) {
               return { username: "Guest", roles: ["guest"] };
             }
           })

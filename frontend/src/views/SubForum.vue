@@ -29,9 +29,8 @@
           </div>
           <div class="col col-7">
             <div class="row">
-              <div class="col offset-10 col-2">
-                <span>2222</span>
-                <span class="pl-1 material-icons align-middle">message</span>
+              <div class="col offset-10 col-2 text-right">
+                <span class="pl-1 material-icons align-middle">delete</span>
               </div>
             </div>
           </div>

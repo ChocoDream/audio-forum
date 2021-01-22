@@ -1,6 +1,6 @@
 <template>
   <li
-    class="post-info list-group-item"
+    class="post-info list-group-item container-fluid"
     :class="{ 'list-group-item-info': post.isModeratorPost }"
   >
     <div class="row mb-2">
@@ -22,8 +22,16 @@
     </div>
     <div class="row">
       <div class="col align-self-start col-3">{{ user.username }}</div>
-      <div class="col col-9">
+      <div class="col col-8">
         <p class="text-left">{{ post.content }}</p>
+      </div>
+      <div class="col col-1 text-right">
+        <span
+          class="material-icons delete-icon"
+          v-if="isModerator"
+          @click="deletePost"
+          >delete</span
+        >
       </div>
     </div>
   </li>
@@ -36,9 +44,14 @@ import { Component, Prop } from "vue-property-decorator";
 export default class Post extends Vue {
   @Prop({ type: Object }) post: any;
   @Prop({ type: Number }) index: any;
+  @Prop({ type: Boolean }) isModerator: any;
+
+  deletePost(id: any) {
+    this.$emit("deletePost", id);
+  }
 
   user = { username: "DEFAULT" };
-  async mounted() {
+  async created() {
     await fetch(`/api/users/${this.post.userId}`)
       .then((response) => {
         if (response.ok) return response.json();
@@ -51,5 +64,9 @@ export default class Post extends Vue {
 <style scoped lang="scss">
 .post-info {
   list-style: none;
+}
+
+.delete-icon:hover {
+  cursor: pointer;
 }
 </style>

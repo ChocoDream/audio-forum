@@ -43,6 +43,7 @@
         id="inputPassword"
         class="form-control"
         placeholder="Enter password"
+        pattern="^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[!'#\$%&'\(\)\*\+,-\.\/:;<=>\?@[\]\^_`\{\|}~])[a-zA-Z0-9!'#\$%&'\(\)\*\+,-\.\/:;<=>\?@[\]\^_`\{\|}~]{6,}$"
         required
       />
       <p class="text-danger" v-show="errorMessage">{{ errorMessage }}</p>

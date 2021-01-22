@@ -30,7 +30,7 @@
           <div class="col col-7">
             <div class="row">
               <div class="col offset-10 col-2 text-right">
-                <span class="pl-1 material-icons align-middle">delete</span>
+                <span class="pl-1 material-icons align-middle" v-if="isModerator" @click.stop="deleteThread(item.id)">delete</span>
               </div>
             </div>
           </div>
@@ -74,6 +74,10 @@ export default class SubForum extends Vue {
 
   goToRoute(id: any) {
     this.$router.push(`${this.currentRoute()}/${id}`);
+  }
+
+  deleteThread(id: string) {
+    console.log(id)
   }
 
   async lockThread(data: any) {

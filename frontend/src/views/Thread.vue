@@ -1,14 +1,24 @@
 <template>
   <div class="container thread">
-    <ul class="list-group">
+    <div class="row">
+      
+    </div>
+    <ul class="list-group row">
       <Post
         v-for="(item, i) of postData"
         :key="`${item.id}+${i}`"
+        class="col col-12"
+        @deletePost="deletePost"
         :post="item"
         :index="i + 1"
+        :isModerator="true"
       />
     </ul>
-    <new-post @sendDataToParent="makeNewPost" :user="this.user" />
+    <div class="row">
+      <div class="col col-12">
+        <new-post @sendDataToParent="makeNewPost" :user="this.user" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -35,6 +45,10 @@ export default class Thread extends Vue {
 
   get user() {
     return this.$store.state.currentUser;
+  }
+
+  async deletePost(id: any) {
+    console.log("hello world");
   }
 
   async makeNewPost(data: any) {

@@ -67,7 +67,15 @@ export default new Vuex.Store({
       commit("setCurrentThread", await result.json());
     },
     async deleteThread({ commit }, id) {
-      await
+      await fetch(`/api/threads/${id}`, {
+        method: "DELETE",
+      })
+        .then((res) => {
+          this.commit("deleteThread", id);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
     async logoutUser({ commit }) {
       await fetch("/api/login", {
@@ -77,10 +85,11 @@ export default new Vuex.Store({
           this.commit("setCurrentUser", {
             username: "Guest",
             roles: ["guest"],
+            moderatorSubForumId: [],
           });
         })
         .catch((error) => {
-          console.log(error);
+          console.error(error);
         });
     },
     async whoami({ commit }) {

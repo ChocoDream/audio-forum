@@ -1,18 +1,22 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import router from "../router/index";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    currentUser: { username: "Guest", roles: ["guest"] },
+    currentUser: {
+      username: "Guest",
+      roles: ["guest"],
+      moderatorSubForumId: [],
+    },
     subForums: [],
     threads: [],
     posts: [],
     users: [],
     sidenavState: false,
     isModerator: false,
-    isGuest: true,
   },
   mutations: {
     setCurrentUser(state, data) {
@@ -86,4 +90,15 @@ export default new Vuex.Store({
     },
   },
   modules: {},
+  getters: {
+    isModerator: (state) => {
+      if (state.currentUser.moderatorSubForumId === undefined) return false;
+      const subforumId = router.currentRoute.params.subforum;
+      return (
+        state.currentUser.moderatorSubForumId.some((item: any) => {
+          item == subforumId;
+        }) || state.currentUser.roles.includes("adminstrator")
+      );
+    },
+  },
 });

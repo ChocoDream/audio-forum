@@ -163,9 +163,9 @@ module.exports = class RestApi {
     `);
       // Run the statement
       try {
-        res.json(statement.run(b));
+        res.status("200").json(statement.run(b));
       } catch (e) {
-        res.json({ error: e + "" });
+        res.status("400").json({ error: e + "" });
       }
     });
   }

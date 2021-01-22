@@ -14,7 +14,11 @@
           <div class="col col-5">
             <div class="row">
               <div class="col col-1">
-                <lock :stateFromParent="false" />
+                <lock
+                  :stateFromParent="item.isLocked"
+                  :id="item.id"
+                  @lockThreadFromChild="lockThread"
+                />
               </div>
               <div class="col col-11">
                 <h4 class="item-title text-left">
@@ -73,8 +77,26 @@ export default class SubForum extends Vue {
     this.$router.push(`${this.currentRoute()}/${id}`);
   }
 
-  lockThread(id: any) {
-    console.log("hello");
+  async lockThread(data: any) {
+    if (!this.isModerator) return;
+    const thread = this.threadData.filter(
+      (item: any) => item.id === data.id
+    )[0];
+    data.state ? (thread.isLocked = 1) : (thread.isLocked = 0);
+    await fetch("/api/threads/" + thread.id, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "Application/json",
+      },
+      body: JSON.stringify(thread),
+    })
+      .then((response) => {
+        if (response.status === 200) return response.json();
+        else {
+          console.log("Error when updating thread");
+        }
+      })
+      .catch((error) => console.error(error));
     return "";
   }
 
@@ -117,6 +139,10 @@ export default class SubForum extends Vue {
 
   get isGuest() {
     return this.user.roles.includes("guest");
+  }
+
+  get isModerator() {
+    return this.$store.getters["isModerator"];
   }
 
   get threadData() {

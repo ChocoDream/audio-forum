@@ -11,6 +11,7 @@ export default new Vuex.Store({
       roles: ["guest"],
       moderatorSubForumId: [],
     },
+    currentThread: {},
     subForums: [],
     threads: [],
     posts: [],
@@ -21,6 +22,9 @@ export default new Vuex.Store({
   mutations: {
     setCurrentUser(state, data) {
       state.currentUser = data;
+    },
+    setCurrentThread(state, data) {
+      state.currentThread = data;
     },
     setSubForums(state, data) {
       state.subForums = data;
@@ -57,6 +61,13 @@ export default new Vuex.Store({
     async fetchUsers({ commit }) {
       const result = await fetch(`/api/users`);
       commit("setUsers", await result.json());
+    },
+    async fetchCurrentThread({ commit }, id) {
+      const result = await fetch(`/api/threads/${id}`);
+      commit("setCurrentThread", await result.json());
+    },
+    async deleteThread({ commit }, id) {
+      await
     },
     async logoutUser({ commit }) {
       await fetch("/api/login", {
@@ -100,6 +111,5 @@ export default new Vuex.Store({
         }) || state.currentUser.roles.includes("adminstrator")
       );
     },
-    
   },
 });

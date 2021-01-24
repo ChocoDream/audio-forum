@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container page">
     <h2>Security Tab</h2>
     <h3 class="text-left">Users</h3>
     <ul class="list-group">
@@ -25,7 +25,6 @@
                     v-for="(role, i) of user.roles"
                     :key="`${role}+${i}`"
                     :role="role"
-                    :size="'1.3em'"
                   />
                 </div>
                 <div class="col col-5">
@@ -37,18 +36,15 @@
                 </div>
                 <div class="col col-3">
                   <div class="row">
-                    <div class="col col-4">
-                      <button class="btn btn-warning" @click="banUser(user.id)">
-                        Ban
-                      </button>
-                    </div>
-                    <div class="col col-6 offset-2">
-                      <button
-                        class="btn btn-danger"
+                    <div class="col col-4"></div>
+                    <div class="col col-6 offset-2 text-right">
+                      <span
+                        class="material-icons align-middle delete-icon"
                         @click="deleteUser(user.id)"
+                        v-show="user.id !== currentUser.id"
                       >
-                        Delete
-                      </button>
+                        delete
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -85,8 +81,8 @@ export default class Security extends Vue {
     return this.$store.state.subForums;
   }
 
-  banUser(userId: string) {
-    console.log(userId);
+  get currentUser() {
+    return this.$store.state.currentUser;
   }
 
   deleteUser(userId: string) {
@@ -100,4 +96,18 @@ export default class Security extends Vue {
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.delete-icon {
+  font-size: 1.8em;
+  padding: 5%;
+  &:hover {
+    color: red;
+    cursor: pointer;
+    transition: 100ms;
+  }
+}
+
+.page {
+  padding-bottom: 20vh;
+}
+</style>

@@ -24,7 +24,7 @@ export default new Vuex.Store({
       state.currentUser = data;
     },
     setCurrentThread(state, data) {
-      state.currentThread = data;
+      state.currentThread = data[0];
     },
     setSubForums(state, data) {
       state.subForums = data;
@@ -43,6 +43,15 @@ export default new Vuex.Store({
     },
     setIsModerator(state, data) {
       state.isModerator = data;
+    },
+    deleteThread(state, data) {
+      state.threads = state.threads.filter((thread: any) => thread.id !== data);
+    },
+    deletePost(state, data) {
+      state.posts = state.posts.filter((post: any) => post.id !== data);
+    },
+    deleteUser(state, data) {
+      state.users = state.posts.filter((user: any) => user.id !== data);
     },
   },
   actions: {
@@ -76,6 +85,24 @@ export default new Vuex.Store({
         .catch((error) => {
           console.error(error);
         });
+    },
+    async deletePost({ commit }, id) {
+      await fetch(`/api/posts/${id}`, {
+        method: "DELETE",
+      })
+        .then((res) => {
+          this.commit("deletePost", id);
+        })
+        .catch((error) => console.error(error));
+    },
+    async deleteUser({ commit }, id) {
+      await fetch(`/api/users/${id}`, {
+        method: "DELETE",
+      })
+        .then((res) => {
+          this.commit("deleteUser", id);
+        })
+        .catch((error) => console.error(error));
     },
     async logoutUser({ commit }) {
       await fetch("/api/login", {

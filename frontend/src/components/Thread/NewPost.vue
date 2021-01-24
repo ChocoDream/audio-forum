@@ -11,8 +11,9 @@
           <textarea
             class="form-control content-text"
             rows="5"
-            :disabled="isGuest"
+            :disabled="isGuest || locked"
             v-model="content"
+            required
           >
           </textarea>
         </div>
@@ -24,16 +25,18 @@
                   type="checkbox"
                   id="moderatorCheckbox"
                   v-model="warning"
+                  :disabled="isGuest || locked"
                 />
                 <label for="moderatorCheckbox" class="form-check-label pl-1"
                   >Mark as warning post
                 </label>
               </div>
-              <div class="col col-4" :class="{ 'offset-8': !isModerator }">
+              <div class="col col-4 " :class="{ 'offset-8': !isModerator }">
                 <button
-                  class="btn btn-info"
-                  :disabled="isGuest"
+                  class="btn btn-info float-right"
+                  :disabled="isGuest || locked"
                   @click="createPost"
+                  type="submit"
                 >
                   <i class="material-icons align-middle">send</i>
                   Send
@@ -59,19 +62,10 @@ export default class NewPost extends Vue {
   warning = false;
 
   @Prop({ type: Object }) user: any;
+  @Prop({ type: Number, default: 1 }) isLocked: any;
 
   get isModerator() {
-    if (
-      //Checks if the user is an adminstrator OR if the user is a moderator of the subforum
-      this.user.roles.includes("adminstrator") ||
-      (this.user.roles.includes("moderator") &&
-        this.user.moderatorSubForumId.includes(
-          Number(this.$route.params.subforum)
-        ))
-    ) {
-      return true;
-    }
-    return false;
+    return this.$store.getters["isModerator"];
   }
 
   get isGuest() {
@@ -79,14 +73,18 @@ export default class NewPost extends Vue {
       this.content = "Log in to join the conversation";
       return true;
     }
+    this.content = "";
     return false;
+  }
+
+  get locked() {
+    return Number(this.isLocked) === 1 ? true : false;
   }
 
   createPost() {
     this.$emit("sendDataToParent", {
       content: this.content,
       warning: this.warning,
-      userState: this.isGuest,
     });
   }
 }

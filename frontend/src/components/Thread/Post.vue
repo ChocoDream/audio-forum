@@ -29,7 +29,7 @@
         <span
           class="material-icons delete-icon"
           v-if="isModerator"
-          @click="deletePost"
+          @click="deletePost(post.id)"
           >delete</span
         >
       </div>
@@ -44,7 +44,7 @@ import { Component, Prop } from "vue-property-decorator";
 export default class Post extends Vue {
   @Prop({ type: Object }) post: any;
   @Prop({ type: Number }) index: any;
-  @Prop({ type: Boolean }) isModerator: any;
+  @Prop({ type: Boolean, default: false }) isModerator: any;
 
   deletePost(id: any) {
     this.$emit("deletePost", id);

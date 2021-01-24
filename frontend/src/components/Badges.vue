@@ -18,8 +18,8 @@ export default class Badges extends Vue {
     guest: "badge-warning",
     banned: "badge-danger",
   };
-  @Prop({ type: String }) role: any;
-  @Prop({ type: String }) size: any;
+  @Prop({ type: String, default: "user" }) role: any;
+  @Prop({ type: String, default: "1.3em" }) size: any;
 
   get capitalized() {
     return this.role.replace(/^\w/, (c: string) => c.toUpperCase());
@@ -35,5 +35,4 @@ export default class Badges extends Vue {
 }
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

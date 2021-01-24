@@ -1,8 +1,6 @@
 <template>
   <div class="container thread">
-    <div class="row">
-      
-    </div>
+    <div class="row"></div>
     <ul class="list-group row">
       <Post
         v-for="(item, i) of postData"
@@ -16,7 +14,11 @@
     </ul>
     <div class="row">
       <div class="col col-12">
-        <new-post @sendDataToParent="makeNewPost" :user="this.user" />
+        <new-post
+          @sendDataToParent="makeNewPost"
+          :user="this.user"
+          :isLocked="currentThread.isLocked"
+        />
       </div>
     </div>
   </div>
@@ -47,15 +49,16 @@ export default class Thread extends Vue {
     return this.$store.state.currentUser;
   }
 
-  async deletePost(id: any) {
-    console.log("hello world");
+  get currentThread() {
+    return this.$store.state.currentThread;
+  }
+
+  async deletePost(id: string) {
+    this.$store.dispatch("deletePost", id);
   }
 
   async makeNewPost(data: any) {
-    if (!this.user.roles.includes("user")) return; //Soft-prevent guests from posting
-    if (data.userState) {
-      return window.location.replace("https://youtu.be/m_0qHRwU_sQ?t=7");
-    }
+    if (!this.user.roles.includes("user")) return;
     const body = {
       content: data.content,
       userId: this.user.id,
@@ -80,6 +83,7 @@ export default class Thread extends Vue {
 
   created() {
     this.$store.dispatch("fetchPostsWithThreadId", this.$route.params.thread);
+    this.$store.dispatch("fetchCurrentThread", this.$route.params.thread);
   }
 }
 </script>

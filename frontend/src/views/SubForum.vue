@@ -77,7 +77,7 @@ export default class SubForum extends Vue {
   }
 
   deleteThread(id: string) {
-    console.log(id)
+    this.$store.dispatch("deleteThread", id)
   }
 
   async lockThread(data: any) {

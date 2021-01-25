@@ -14,14 +14,27 @@ module.exports = {
       or false (not allowed route)
   */
   restPrefix: "/api/",
-  posts() {
-    // Let everyone trash the product table
-    return true;
+  posts(user, method, req) {
+    if (method === "POST" && user.roles.includes("user")) {
+      console.log(req.body);
+    }
+
+    if (method === "GET") {
+      return true;
+    }
+
+    if (method === "DELETE" && isModeratorOrAbove(user, req)) {
+      return true;
+    }
+    return false;
   },
   subforums() {
-    return true;
+    if (method === "GET") {
+      return true;
+    }
+    return false;
   },
-  threads() {
+  threads(ui) {
     return true;
   },
   users(user, method, req) {
@@ -36,9 +49,6 @@ module.exports = {
     if (method === "PUT" && user.roles.includes("adminstrator")) {
       return true;
     }
-    // Allow a user to change info about him/herself
-    // (the split pop thing is how we get the id from the url
-    // since we do not have req.params available in middleware)
     // Allow admins to delete users
     if (method === "DELETE" && user.roles.includes("adminstrator")) {
       return true;
@@ -49,16 +59,17 @@ module.exports = {
     // Everyone should always be allowd to try to login and to logout
     return true;
   },
-  threadssubforum() {
-    return true;
+  threadssubforum(user, method) {
+    if (method === "GET") {
+      return true;
+    }
+    return false;
   },
-  poststhread(user, method, req) {
-    return true;
-  },
-  countposts(method, req) {
-    return true;
-  },
-  countthreads() {
-    return true;
+  poststhread(user, method) {
+    if (method === "GET") {
+      return true;
+    }
+
+    return false;
   },
 };

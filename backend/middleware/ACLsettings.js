@@ -1,3 +1,11 @@
+const isModeratorOrAbove = (user, req) => {
+  return (
+    user.roles.includes("adminstrator") ||
+    (user.roles.includes("moderator") &&
+      user.moderatorSubForumId.includes(Number(req.body.subforum)))
+  );
+};
+
 module.exports = {
   /* 
     Settings for acl:

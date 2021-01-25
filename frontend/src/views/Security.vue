@@ -85,8 +85,9 @@ export default class Security extends Vue {
     return this.$store.state.currentUser;
   }
 
-  deleteUser(userId: string) {
-    console.log(userId);
+  deleteUser(id: string) {
+    this.$store.dispatch("deleteUser", id);
+    this.$store.dispatch("fetchUsers");
   }
 
   created() {

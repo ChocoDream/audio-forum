@@ -18,7 +18,7 @@ module.exports = class RestApi {
     for (let table of tables) {
       if (table === "users") {
         //SKIP users in generic tables loop
-
+        this.createDeleteRoute(table);
         continue;
       }
       this.createGetAllRoute(table);

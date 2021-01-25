@@ -31,7 +31,7 @@
             <div class="row">
               <div class="col offset-10 col-2 text-right">
                 <span
-                  class="pl-1 material-icons align-middle"
+                  class="pl-1 material-icons align-middle delete-icon"
                   v-if="isModerator"
                   @click.stop="deleteThread(item.id)"
                   >delete</span
@@ -169,14 +169,9 @@ export default class SubForum extends Vue {
   background-color: lightblue;
 }
 
-.lock-icon-btn {
+.delete-icon:hover {
+  color: red;
   cursor: pointer;
-  color: lightgray;
-  &:hover {
-    color: red;
-  }
-  .active {
-    color: yellow;
-  }
+  transition: 100ms;
 }
 </style>

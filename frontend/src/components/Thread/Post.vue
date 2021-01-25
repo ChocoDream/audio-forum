@@ -68,5 +68,7 @@ export default class Post extends Vue {
 
 .delete-icon:hover {
   cursor: pointer;
+  color: red;
+  transition: 100ms;
 }
 </style>

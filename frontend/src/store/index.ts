@@ -78,6 +78,10 @@ export default new Vuex.Store({
     async deleteThread({ commit }, id) {
       await fetch(`/api/threads/${id}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "Application/json",
+        },
+        body: JSON.stringify({ subforum: router.currentRoute.params.subforum }),
       })
         .then((res) => {
           this.commit("deleteThread", id);

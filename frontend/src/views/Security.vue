@@ -53,9 +53,6 @@
           </div>
         </div>
       </li>
-      {{
-        users
-      }}
     </ul>
   </div>
 </template>

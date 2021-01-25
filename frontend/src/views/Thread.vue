@@ -9,7 +9,7 @@
         @deletePost="deletePost"
         :post="item"
         :index="i + 1"
-        :isModerator="true"
+        :isModerator="isModerator"
       />
     </ul>
     <div class="row">
@@ -53,6 +53,10 @@ export default class Thread extends Vue {
     return this.$store.state.currentThread;
   }
 
+  get isModerator() {
+    return this.$store.getters["isModerator"];
+  }
+
   async deletePost(id: string) {
     this.$store.dispatch("deletePost", id);
   }
@@ -75,7 +79,7 @@ export default class Thread extends Vue {
       .then((response) => {
         if (response.status === 201) return response.json();
         else if (response.status === 400) {
-          console.log("Error when creating a new post");
+          console.error("Error when creating a new post");
         }
       })
       .catch((error) => console.error(error));

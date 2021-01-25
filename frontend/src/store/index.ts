@@ -89,6 +89,10 @@ export default new Vuex.Store({
     async deletePost({ commit }, id) {
       await fetch(`/api/posts/${id}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "Application/json",
+        },
+        body: JSON.stringify({ subforum: router.currentRoute.params.subforum }),
       })
         .then((res) => {
           this.commit("deletePost", id);

@@ -141,6 +141,9 @@ module.exports = class RestApi {
     this.app.put(this.prefix + table + "/:id", (req, res) => {
       let b = req.body;
       // Add the id to b
+      if (req.body.subforum) {
+        delete req.body.subforum;
+      }
       b.id = req.params.id;
       let statement = this.db.prepare(`
       UPDATE ${table} 

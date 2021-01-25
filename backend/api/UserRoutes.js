@@ -119,7 +119,4 @@ module.exports = function userRoutes(app, prefix, db) {
   app.put(prefix + "users", (req, res) => {
     //UPDATE USER
   });
-  app.delete(prefix + "users", (req, res) => {
-
-  });
 };

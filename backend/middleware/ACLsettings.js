@@ -15,10 +15,22 @@ module.exports = {
   */
   restPrefix: "/api/",
   posts(user, method, req) {
-    if (method === "POST" && user.roles.includes("user")) {
-      console.log(req.body);
+    if (
+      method === "POST" &&
+      req.body.isModeratorPost == 0 &&
+      user.roles.includes("user")
+    ) {
+      return true;
     }
 
+    if (
+      method === "POST" &&
+      req.body.isModeratorPost == 1 &&
+      isModeratorOrAbove(user, req)
+    ) {
+      return true;
+    }
+    
     if (method === "GET") {
       return true;
     }
@@ -28,14 +40,30 @@ module.exports = {
     }
     return false;
   },
-  subforums() {
+  subforums(user, method, req) {
     if (method === "GET") {
       return true;
     }
+
     return false;
   },
-  threads(ui) {
-    return true;
+  threads(user, method, req) {
+    if (method === "POST" && user.roles.includes("user")) {
+      return true;
+    }
+
+    if (method === "GET") {
+      return true;
+    }
+
+    if (method === "PUT" && isModeratorOrAbove(user, req)) {
+      return true;
+    }
+
+    if (method === "DELETE" && isModeratorOrAbove(user, req)) {
+      return true;
+    }
+    return false;
   },
   users(user, method, req) {
     if (method === "POST") {
@@ -59,13 +87,13 @@ module.exports = {
     // Everyone should always be allowd to try to login and to logout
     return true;
   },
-  threadssubforum(user, method) {
+  threadssubforum(user, method, req) {
     if (method === "GET") {
       return true;
     }
     return false;
   },
-  poststhread(user, method) {
+  poststhread(user, method, req) {
     if (method === "GET") {
       return true;
     }

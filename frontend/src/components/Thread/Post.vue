@@ -55,6 +55,9 @@ export default class Post extends Vue {
     await fetch(`/api/users/${this.post.userId}`)
       .then((response) => {
         if (response.ok) return response.json();
+        else{
+          return {username: "[DELETED]"}
+        }
       })
       .then((data) => (this.user = data));
   }

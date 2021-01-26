@@ -1,3 +1,5 @@
+const Encrypt = require("../logic/Encrypt");
+
 module.exports = function userRoutes(app, prefix, db) {
   app.get(prefix + "users", (req, res) => {
     const statement = db.prepare(`
@@ -97,6 +99,15 @@ module.exports = function userRoutes(app, prefix, db) {
 
   app.post(prefix + "users", (req, res) => {
     const body = req.body;
+    //VALIDATION TODO
+    const regex = new RegExp("^(?=.*d).{6,}$");
+
+    if (regex.test(body.password) === false) {
+      return res.status("400").json({
+        error: "Password does not meet the requirements of a secure password",
+      });
+    }
+
     if (body.password) {
       body.password = Encrypt.multiEncrypt(body.password);
     }
@@ -116,7 +127,9 @@ module.exports = function userRoutes(app, prefix, db) {
     }
   });
 
-  app.put(prefix + "users", (req, res) => {
+  app.put(prefix + "users/:id", (req, res) => {
+    const body = req.body;
     //UPDATE USER
+    console.log(body);
   });
 };

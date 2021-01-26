@@ -139,20 +139,20 @@ module.exports = class RestApi {
 
   createPutRoute(table, idKey = "id") {
     this.app.put(this.prefix + table + "/:id", (req, res) => {
-      let b = req.body;
+      let body = req.body;
       // Add the id to b
       if (req.body.subforum) {
         delete req.body.subforum;
       }
-      b.id = req.params.id;
+      body.id = req.params.id;
       let statement = this.db.prepare(`
       UPDATE ${table} 
-      SET ${Object.keys(b).map((x) => x + " = $" + x)}
+      SET ${Object.keys(body).map((x) => x + " = $" + x)}
       WHERE ${idKey} = $id
     `);
       // Run the statement
       try {
-        res.status("200").json(statement.run(b));
+        res.status("200").json(statement.run(body));
       } catch (e) {
         res.status("400").json({ error: e + "" });
       }

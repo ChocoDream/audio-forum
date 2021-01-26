@@ -4,6 +4,7 @@ const path = require("path");
 const userRoutes = require("./api/UserRoutes");
 const loginRoutes = require("./api/LoginRoutes");
 const childToParentRoutes = require("./api/ChildToParentRoutes");
+const roleRoutes = require("./api/RoleRoutes");
 
 module.exports = class RestApi {
   constructor(
@@ -30,6 +31,7 @@ module.exports = class RestApi {
 
     loginRoutes(this.app, this.prefix, this.db);
     userRoutes(this.app, this.prefix, this.db);
+    roleRoutes(this.app, this.prefix, this.db);
     childToParentRoutes(this.app, this.prefix, this.db, "threads", "subForum");
     childToParentRoutes(this.app, this.prefix, this.db, "posts", "thread");
   }
@@ -161,6 +163,10 @@ module.exports = class RestApi {
 
   createDeleteRoute(table, idKey = "id") {
     this.app.delete(this.prefix + table + "/:id", (req, res) => {
+      if (req.body.subforum) {
+        delete req.body.subforum;
+      }
+
       let statement = this.db.prepare(`
         DELETE FROM ${table} WHERE ${idKey} = $id
       `);

@@ -27,14 +27,17 @@
                     :role="role"
                   />
                 </div>
-                <div class="col col-5">
+                <div class="col col-6">
                   <v-select
                     multiple
                     label="title"
                     :options="subForums"
+                    :reduce="(title) => title.id"
+                    :value="user.moderatorSubForumId"
+                    @input="(roles) => updateUserRoles(user, roles)"
                   ></v-select>
                 </div>
-                <div class="col col-3">
+                <div class="col col-2">
                   <div class="row">
                     <div class="col col-4"></div>
                     <div class="col col-6 offset-2 text-right">
@@ -70,6 +73,21 @@ import { Component } from "vue-property-decorator";
 export default class Security extends Vue {
   $store: any;
 
+  logData(testdata: any) {
+    console.log("hello world");
+    console.log(testdata);
+  }
+
+  updateUserRoles(user: any, modarray: number[]) {
+    if (!user.moderatorSubForumId) {
+      console.log("does not exist... but soon");
+      console.log(modarray[0]);
+    } else {
+      console.log("This one has information. OH BOY");
+      console.log(modarray)
+    }
+  }
+
   get users() {
     return this.$store.state.users;
   }
@@ -90,6 +108,28 @@ export default class Security extends Vue {
   created() {
     this.$store.dispatch("fetchUsers");
     this.$store.dispatch("fetchSubForums");
+  }
+
+  async addRole(userId: number, roleId: number) {
+    const body = {
+      userRoleId: 3,
+      userId,
+    };
+    await fetch("/api/roles", {
+      method: "POST",
+      headers: {
+        "Content-Type": "Application/json",
+      },
+      body: JSON.stringify(body),
+    })
+      .then((response) => {
+        if (response.status === 201) {
+          return response.json();
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 }
 </script>

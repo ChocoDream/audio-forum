@@ -18,12 +18,14 @@ module.exports = {
     if (
       method === "POST" &&
       req.body.isModeratorPost == 0 &&
+      user.roles &&
       user.roles.includes("user")
     ) {
       return true;
     } else if (
       method === "POST" &&
       req.body.isModeratorPost == 1 &&
+      user.roles &&
       isModeratorOrAbove(user, req)
     ) {
       return true;
@@ -33,7 +35,7 @@ module.exports = {
       return true;
     }
 
-    if (method === "DELETE" && isModeratorOrAbove(user, req)) {
+    if (method === "DELETE" && user.roles && isModeratorOrAbove(user, req)) {
       return true;
     }
     return false;
@@ -46,7 +48,7 @@ module.exports = {
     return false;
   },
   threads(user, method, req) {
-    if (method === "POST" && user.roles.includes("user")) {
+    if (method === "POST" && user.roles && user.roles.includes("user")) {
       return true;
     }
 
@@ -54,11 +56,11 @@ module.exports = {
       return true;
     }
 
-    if (method === "PUT" && isModeratorOrAbove(user, req)) {
+    if (method === "PUT" && user.roles && isModeratorOrAbove(user, req)) {
       return true;
     }
 
-    if (method === "DELETE" && isModeratorOrAbove(user, req)) {
+    if (method === "DELETE" && user.roles && isModeratorOrAbove(user, req)) {
       return true;
     }
     return false;
@@ -72,18 +74,34 @@ module.exports = {
       return true;
     }
     // Allow admins to delete users
-    if (method === "DELETE" && user.roles.includes("adminstrator")) {
-      return true;
-    }
-    
-    return false;
-  },
-  roles(user, method, req) {
-    if (method === "POST" && user.roles.includes("adminstrator")) {
+    if (
+      method === "DELETE" &&
+      user.roles &&
+      user.roles.includes("adminstrator")
+    ) {
       return true;
     }
 
-    if (method === "DELETE" && user.roles.includes("adminstrator")) {
+    return false;
+  },
+  roles(user, method, req) {
+    if (
+      method === "POST" &&
+      req.body.userRoleId !== 1 && //forbids adding adminstrator role
+      req.body.userRoleId !== 6 && //forbids adding banned role
+      user.roles &&
+      user.roles.includes("adminstrator")
+    ) {
+      return true;
+    }
+
+    if (
+      method === "DELETE" &&
+      req.body.userRoleId !== 1 && //forbids deleting adminstrator role
+      req.body.userRoleId !== 5 && //forbids deleting user role
+      user.roles &&
+      user.roles.includes("adminstrator")
+    ) {
       return true;
     }
     return false;

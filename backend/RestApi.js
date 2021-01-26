@@ -90,17 +90,17 @@ module.exports = class RestApi {
         const body = req.body;
         if (typeof body.isModeratorPost != "boolean")
           return res.status("400").json({
-            message:
+            error:
               "Expected Boolean for isModeratorPost, recieved: " +
               body.isModeratorPost,
           });
         if (isNaN(body.userId))
           return res.status("400").json({
-            message: "Expected Number for userId, recieved: " + body.userId,
+            error: "Expected Number for userId, recieved: " + body.userId,
           });
         if (isNaN(body.threadId))
           return res.status("400").json({
-            message: "Expected Number for threadId, recieved: " + body.threadId,
+            error: "Expected Number for threadId, recieved: " + body.threadId,
           });
         b = {
           content: body.content,
@@ -113,7 +113,7 @@ module.exports = class RestApi {
         const body = req.body;
         if (isNaN(body.subForumId)) {
           return res.status("400").json({
-            message:
+            error:
               "Expected Number for subForumId, recieved: " + body.subForumId,
           });
         }

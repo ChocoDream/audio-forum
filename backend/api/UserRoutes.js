@@ -126,10 +126,4 @@ module.exports = function userRoutes(app, prefix, db) {
       res.status("400").json({ error: e + "" });
     }
   });
-
-  app.put(prefix + "users/:id", (req, res) => {
-    const body = req.body;
-    //UPDATE USER
-    console.log(body);
-  });
 };

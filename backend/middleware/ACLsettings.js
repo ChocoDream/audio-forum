@@ -21,15 +21,14 @@ module.exports = {
       user.roles.includes("user")
     ) {
       return true;
-    }
-    else if (
+    } else if (
       method === "POST" &&
       req.body.isModeratorPost == 1 &&
       isModeratorOrAbove(user, req)
     ) {
       return true;
     }
-    
+
     if (method === "GET") {
       return true;
     }
@@ -72,11 +71,18 @@ module.exports = {
     if (method === "GET") {
       return true;
     }
-    // Allow admins to change info about a user
-    if (method === "PUT" && user.roles.includes("adminstrator")) {
+    // Allow admins to delete users
+    if (method === "DELETE" && user.roles.includes("adminstrator")) {
       return true;
     }
-    // Allow admins to delete users
+    
+    return false;
+  },
+  roles(user, method, req) {
+    if (method === "POST" && user.roles.includes("adminstrator")) {
+      return true;
+    }
+
     if (method === "DELETE" && user.roles.includes("adminstrator")) {
       return true;
     }

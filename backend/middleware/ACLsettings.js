@@ -22,8 +22,7 @@ module.exports = {
     ) {
       return true;
     }
-
-    if (
+    else if (
       method === "POST" &&
       req.body.isModeratorPost == 1 &&
       isModeratorOrAbove(user, req)
@@ -81,7 +80,7 @@ module.exports = {
     if (method === "DELETE" && user.roles.includes("adminstrator")) {
       return true;
     }
-    return false; // otherwise do not allow the request
+    return false;
   },
   login() {
     // Everyone should always be allowd to try to login and to logout

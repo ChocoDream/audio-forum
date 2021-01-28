@@ -45,6 +45,12 @@ module.exports = function userRoutes(app, prefix, db) {
       });
     }
 
+    if (/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/.test(body.email) === false) {
+      return res.status("400").json({
+        error: "Email does not meet the requirements of an email",
+      });
+    }
+
     if (body.password) {
       body.password = Encrypt.multiEncrypt(body.password);
     }

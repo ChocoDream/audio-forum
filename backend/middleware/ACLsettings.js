@@ -57,10 +57,6 @@ module.exports = {
     return false;
   },
 
-  getFullUser() {
-    return true;
-  },
-
   users(user, method, req) {
     if (method === "POST") {
       return true;

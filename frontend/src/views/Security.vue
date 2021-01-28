@@ -36,6 +36,7 @@
                     :value="user.subforumId"
                     @option:deselecting="deleteRole(user.id, $event.id)"
                     @option:selecting="addRole(user.id, $event.id)"
+                    @input="refresh"
                   ></v-select>
                 </div>
                 <div class="col col-2">
@@ -73,6 +74,10 @@ import { Component } from "vue-property-decorator";
 })
 export default class Security extends Vue {
   $store: any;
+
+  refresh() {
+    this.$store.dispatch("fetchUsers");
+  }
 
   get users() {
     return this.$store.state.users;
@@ -119,13 +124,12 @@ export default class Security extends Vue {
   }
 
   async deleteRole(userId: number, subforumId: number) {
-    console.log(userId, subforumId);
     await fetch("/api/roles/" + userId, {
       method: "DELETE",
       headers: {
-        "Subforum-Id": `${subforumId}`
-      }
-    })
+        "Subforum-Id": `${subforumId}`,
+      },
+    });
   }
 }
 </script>

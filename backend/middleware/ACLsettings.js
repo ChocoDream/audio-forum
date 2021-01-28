@@ -1,4 +1,4 @@
-const {isModeratorOrAbove} = require("../logic/utils")
+const { isModeratorOrAbove } = require("../logic/utils");
 module.exports = {
   /* 
     Settings for acl:
@@ -84,8 +84,6 @@ module.exports = {
   roles(user, method, req) {
     if (
       method === "POST" &&
-      req.body.userRoleId !== 1 && //forbids adding adminstrator role
-      req.body.userRoleId !== 6 && //forbids adding banned role
       user.roles &&
       user.roles.includes("adminstrator")
     ) {
@@ -94,8 +92,8 @@ module.exports = {
 
     if (
       method === "DELETE" &&
-      req.body.userRoleId !== 1 && //forbids deleting adminstrator role
-      req.body.userRoleId !== 5 && //forbids deleting user role
+      req.headers["subforum-id"] &&
+      /[1-3]/.test(req.headers["subforum-id"]) &&
       user.roles &&
       user.roles.includes("adminstrator")
     ) {

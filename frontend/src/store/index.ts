@@ -64,7 +64,7 @@ export default new Vuex.Store({
       commit("setThreads", await result.json());
     },
     async fetchPostsWithThreadId({ commit }, id) {
-      const result = await fetch(`/api/poststhread/${id}`);
+      const result = await fetch(`/api/postswithusernamethread/${id}`);
       commit("setPosts", await result.json());
     },
     async fetchUsers({ commit }) {

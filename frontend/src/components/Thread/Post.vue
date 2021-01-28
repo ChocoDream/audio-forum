@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col align-self-start col-3">{{ user.username }}</div>
+      <div class="col align-self-start col-3">{{ post.username }}</div>
       <div class="col col-8">
         <p class="text-left">{{ post.content }}</p>
       </div>
@@ -48,18 +48,6 @@ export default class Post extends Vue {
 
   deletePost(id: any) {
     this.$emit("deletePost", id);
-  }
-
-  user = { username: "DEFAULT" };
-  async created() {
-    await fetch(`/api/users/${this.post.userId}`)
-      .then((response) => {
-        if (response.ok) return response.json();
-        else{
-          return {username: "[DELETED]"}
-        }
-      })
-      .then((data) => (this.user = data));
   }
 }
 </script>

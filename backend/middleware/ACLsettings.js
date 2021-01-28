@@ -116,7 +116,8 @@ module.exports = {
     }
     return false;
   },
-  poststhread(user, method, req) {
+
+  postswithusernamethread(user, method, req) {
     if (method === "GET") {
       return true;
     }

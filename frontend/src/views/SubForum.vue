@@ -103,7 +103,7 @@ export default class SubForum extends Vue {
       .then((response) => {
         if (response.status === 200) return response.json();
         else {
-          console.log("Error when updating thread");
+          console.error("Error when updating thread");
         }
       })
       .catch((error) => console.error(error));
@@ -126,7 +126,7 @@ export default class SubForum extends Vue {
       .then((response) => {
         if (response.status === 201) return response.json();
         else if (response.status === 400) {
-          console.log("Error when creating a new thread");
+          console.error("Error when creating a new thread");
         }
       })
       .then((data) => {

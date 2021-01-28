@@ -22,13 +22,6 @@ app.use((error, req, res, next) => {
     });
   }
 });
-
-// Add Express-session as middleware
-/* const pathToSecret = path.join(__dirname, "./logic/session-secret.json");
-
-
-console.log("PATH TO SECRET JSON, PSSTT", pathToSecret);
-const secret = require(pathToSecret); */
 app.use(
   session({
     secret: path.join(__dirname, "./logic/session-secret.json"),

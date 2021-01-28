@@ -35,7 +35,7 @@ export default class Profile extends Vue {
     if (this.user.roles.includes("adminstrator")) {
       return "Every subforum";
     } else {
-      return this.user.moderatorSubForumId.join(", ");
+      return this.user.subforumId.join(", ");
     }
   }
 }

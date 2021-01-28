@@ -3,7 +3,7 @@ const { getUsersFromArray } = require("../logic/utils");
 
 module.exports = function userRoutes(app, prefix, db) {
   app.get(prefix + "users", (req, res) => {
-    const statement = db.prepare("SELECT * FROM getFullUser");
+    const statement = db.prepare("SELECT * FROM GetFullUser");
     let result;
     try {
       result = getUsersFromArray(statement.all());
@@ -17,12 +17,12 @@ module.exports = function userRoutes(app, prefix, db) {
 
   app.get(prefix + "users/:id", (req, res) => {
     const statement = db.prepare(`
-      SELECT * FROM getFullUser
+      SELECT * FROM GetFullUser
       WHERE id = $id
     `);
     let result;
     try {
-      result = getUsersFromArray(statement.all(req.params));
+      result = getUsersFromArray(statement.all(req.params))[0];
     } catch (e) {
       result = { error: e + "" };
     }

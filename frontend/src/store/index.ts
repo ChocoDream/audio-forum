@@ -9,7 +9,7 @@ export default new Vuex.Store({
     currentUser: {
       username: "Guest",
       roles: ["guest"],
-      moderatorSubForumId: [],
+      subforumId: [],
     },
     currentThread: {},
     subForums: [],
@@ -120,7 +120,7 @@ export default new Vuex.Store({
           this.commit("setCurrentUser", {
             username: "Guest",
             roles: ["guest"],
-            moderatorSubForumId: [],
+            subforumId: [],
           });
         })
         .catch((error) => {
@@ -147,10 +147,10 @@ export default new Vuex.Store({
   modules: {},
   getters: {
     isModerator: (state) => {
-      if (state.currentUser.moderatorSubForumId === undefined) return false;
+      if (state.currentUser.subforumId === undefined) return false;
       const subforumId = router.currentRoute.params.subforum;
       return (
-        state.currentUser.moderatorSubForumId.some((item: any) => {
+        state.currentUser.subforumId.some((item: any) => {
           item == subforumId;
         }) || state.currentUser.roles.includes("adminstrator")
       );

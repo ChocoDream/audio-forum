@@ -5,7 +5,7 @@ module.exports.getUsersFromArray = getUsersFromArray = (array) => {
     let previous;
     if (seen.has(entry.id)) {
       previous = seen.get(entry.id);
-      previous.role.push(entry.role);
+      previous.roles.push(entry.roles);
       if (entry.subforumId) {
         previous.subforumId.push(entry.subforumId);
       }
@@ -13,8 +13,8 @@ module.exports.getUsersFromArray = getUsersFromArray = (array) => {
       return false;
     }
 
-    if (!Array.isArray(entry.role)) {
-      entry.role = [entry.role];
+    if (!Array.isArray(entry.roles)) {
+      entry.roles = [entry.roles];
       entry.subforumId = [];
     }
 
@@ -27,6 +27,6 @@ module.exports.isModeratorOrAbove = isModeratorOrAbove = (user, req) => {
   return (
     user.roles.includes("adminstrator") ||
     (user.roles.includes("moderator") &&
-      user.moderatorSubForumId.includes(Number(req.body.subforum)))
+      user.subforumId.includes(Number(req.body.subforum)))
   );
 };

@@ -5,19 +5,21 @@ module.exports = function roleRoutes(app, prefix, db) {
       INSERT INTO userrolesXusers (userRoleId, userId)
       VALUES ($userRoleId, $userId)
     `);
+    console.log(body);
 
-    try {
+    /* try {
       res.status("200").json(statement.run(body));
     } catch (error) {
       res.status("400").json({ error: error + "" });
-    }
+    } */
   });
-  app.delete(prefix + "roles/:id", (req, res) => {
+  app.delete(prefix + "roles", (req, res) => {
     const id = req.params.id;
 
     const statement = db.prepare(`
-      DELETE FROM 
-    `)
+      DELETE FROM userrolesXusers
+      WHERE userId = $id
+    `);
     console.log(id);
   });
 };

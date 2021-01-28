@@ -1,45 +1,12 @@
 const Encrypt = require("../logic/Encrypt");
+const { getUsersFromArray } = require("../logic/utils");
 
 module.exports = function userRoutes(app, prefix, db) {
   app.get(prefix + "users", (req, res) => {
-    const statement = db.prepare(`
-        SELECT 
-            users.id, 
-            users.username, 
-            users.email
-        FROM users
-      `);
-    const statementRoles = db.prepare(`
-        SELECT 
-            userroles.name,
-            userroles.subForumId
-        FROM users
-          INNER JOIN
-            userrolesXusers,
-            userroles
-          ON users.id = userrolesXusers.userId
-          AND userroles.id = userrolesXusers.userRoleId
-        WHERE users.id = $id
-      `);
+    const statement = db.prepare("SELECT * FROM GetFullUser");
     let result;
     try {
-      let users = statement.all();
-      users = users.map((user) => {
-        const stateRoles = statementRoles.all({ id: user.id });
-        Object.assign(user, { roles: stateRoles.map((x) => x.name) }) || null;
-        if (user.roles.includes("moderator")) {
-          //IF USER CONTAIN MODERATOR
-          user.moderatorSubForumId = stateRoles
-            .filter((x) => x.name === "moderator")
-            .map((x) => x.subForumId);
-
-          //REMOVE DUPLICATES
-          const roles = new Set(user.roles);
-          user.roles = [...roles];
-        }
-        return user;
-      });
-      result = users;
+      result = getUsersFromArray(statement.all());
     } catch (e) {
       result = { error: e + "" };
     }
@@ -50,42 +17,12 @@ module.exports = function userRoutes(app, prefix, db) {
 
   app.get(prefix + "users/:id", (req, res) => {
     const statement = db.prepare(`
-      SELECT 
-          users.id, 
-          users.username, 
-          users.email
-      FROM users
-      WHERE users.id = $id
-    `);
-    const statementRoles = db.prepare(`
-      SELECT 
-          userroles.name,
-          userroles.subForumId
-      FROM users
-        INNER JOIN
-          userrolesXusers,
-          userroles
-        ON users.id = userrolesXusers.userId
-        AND userroles.id = userrolesXusers.userRoleId
-      WHERE users.id = $id
+      SELECT * FROM GetFullUser
+      WHERE id = $id
     `);
     let result;
     try {
-      let stateRoles = statementRoles.all(req.params);
-      result =
-        Object.assign(statement.get(req.params), {
-          roles: stateRoles.map((x) => x.name),
-        }) || null;
-      if (result.roles.includes("moderator")) {
-        //IF USER CONTAIN MODERATOR
-        result.moderatorSubForumId = stateRoles
-          .filter((x) => x.name === "moderator")
-          .map((x) => x.subForumId);
-
-        //REMOVE DUPLICATES
-        const roles = new Set(result.roles);
-        result.roles = [...roles];
-      }
+      result = getUsersFromArray(statement.all(req.params))[0];
     } catch (e) {
       result = { error: e + "" };
     }

@@ -22,6 +22,7 @@ module.exports = class RestApi {
         this.createDeleteRoute(table);
         continue;
       }
+
       this.createGetAllRoute(table);
       this.createGetRoute(table);
       this.createPostRoute(table);
@@ -33,7 +34,13 @@ module.exports = class RestApi {
     userRoutes(this.app, this.prefix, this.db);
     roleRoutes(this.app, this.prefix, this.db);
     childToParentRoutes(this.app, this.prefix, this.db, "threads", "subForum");
-    childToParentRoutes(this.app, this.prefix, this.db, "posts", "thread");
+    childToParentRoutes(
+      this.app,
+      this.prefix,
+      this.db,
+      "postsWithUsername",
+      "thread"
+    );
   }
 
   getAllTables() {
@@ -42,7 +49,9 @@ module.exports = class RestApi {
     FROM sqlite_master
     WHERE type = $type
   `);
-    return statement.all({ type: "table" }).map((x) => x.name);
+    const tables = statement.all({ type: "table" }).map((x) => x.name);
+    const views = statement.all({ type: "view" }).map((x) => x.name);
+    return [...tables, ...views];
   }
 
   createGetAllRoute(table) {

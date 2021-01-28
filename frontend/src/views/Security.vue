@@ -33,8 +33,9 @@
                     label="title"
                     :options="subForums"
                     :reduce="(title) => title.id"
-                    :value="user.moderatorSubForumId"
-                    @input="(roles) => updateUserRoles(user, roles)"
+                    :value="user.subforumId"
+                    @option:deselecting="testme"
+                    @option:selecting="addRole(user.id, $event.id)"
                   ></v-select>
                 </div>
                 <div class="col col-2">
@@ -57,6 +58,7 @@
         </div>
       </li>
     </ul>
+    {{users}}
   </div>
 </template>
 
@@ -73,19 +75,13 @@ import { Component } from "vue-property-decorator";
 export default class Security extends Vue {
   $store: any;
 
-  logData(testdata: any) {
-    console.log("hello world");
-    console.log(testdata);
+  testme(data: any) {
+    console.log(data);
   }
 
-  updateUserRoles(user: any, modarray: number[]) {
-    if (!user.moderatorSubForumId) {
-      console.log("does not exist... but soon");
-      console.log(modarray[0]);
-    } else {
-      console.log("This one has information. OH BOY");
-      console.log(modarray)
-    }
+  testmore(data: any, user: any) {
+    console.log(data);
+    console.log(user);
   }
 
   get users() {
@@ -110,10 +106,10 @@ export default class Security extends Vue {
     this.$store.dispatch("fetchSubForums");
   }
 
-  async addRole(userId: number, roleId: number) {
+  async addRole(userId: number, subforumId: number) {
     const body = {
-      userRoleId: 3,
       userId,
+      subforumId,
     };
     await fetch("/api/roles", {
       method: "POST",

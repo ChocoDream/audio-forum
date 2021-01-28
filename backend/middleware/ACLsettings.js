@@ -1,11 +1,4 @@
-const isModeratorOrAbove = (user, req) => {
-  return (
-    user.roles.includes("adminstrator") ||
-    (user.roles.includes("moderator") &&
-      user.moderatorSubForumId.includes(Number(req.body.subforum)))
-  );
-};
-
+const {isModeratorOrAbove} = require("../logic/utils")
 module.exports = {
   /* 
     Settings for acl:
@@ -31,15 +24,12 @@ module.exports = {
       return true;
     }
 
-    if (method === "GET") {
-      return true;
-    }
-
     if (method === "DELETE" && user.roles && isModeratorOrAbove(user, req)) {
       return true;
     }
     return false;
   },
+
   subforums(user, method, req) {
     if (method === "GET") {
       return true;
@@ -47,6 +37,7 @@ module.exports = {
 
     return false;
   },
+
   threads(user, method, req) {
     if (method === "POST" && user.roles && user.roles.includes("user")) {
       return true;
@@ -65,6 +56,11 @@ module.exports = {
     }
     return false;
   },
+
+  getFullUser() {
+    return true;
+  },
+
   users(user, method, req) {
     if (method === "POST") {
       return true;
@@ -84,6 +80,7 @@ module.exports = {
 
     return false;
   },
+
   roles(user, method, req) {
     if (
       method === "POST" &&
@@ -106,17 +103,20 @@ module.exports = {
     }
     return false;
   },
+
   login() {
     // Everyone should always be allowd to try to login and to logout
     return true;
   },
+
   threadssubforum(user, method, req) {
     if (method === "GET") {
       return true;
     }
     return false;
   },
-  poststhread(user, method, req) {
+
+  postswithusernamethread(user, method, req) {
     if (method === "GET") {
       return true;
     }

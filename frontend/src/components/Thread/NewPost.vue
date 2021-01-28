@@ -86,6 +86,7 @@ export default class NewPost extends Vue {
       content: this.content,
       warning: this.warning,
     });
+    this.$store.dispatch("fetchPostsWithThreadId", this.$route.params.thread);
   }
 }
 </script>

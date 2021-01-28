@@ -5,7 +5,7 @@
     <h2>Email: {{ user.email }}</h2>
     <h2>Roles: {{ roles }}</h2>
     <h2 v-if="user.roles.includes('moderator')">
-      Moderator over subforums: {{ subforumNames }}
+      Moderator over subforums: {{ user.subforumId }}
     </h2>
   </div>
 </template>
@@ -22,21 +22,6 @@ export default class Profile extends Vue {
 
   get roles() {
     return this.user.roles.join(", ");
-  }
-
-  get subforumNames() {
-    if (
-      !(
-        this.user.roles.includes("moderator") ||
-        this.user.roles.includes("adminstrator")
-      )
-    )
-      return "";
-    if (this.user.roles.includes("adminstrator")) {
-      return "Every subforum";
-    } else {
-      return this.user.subforumId.join(", ");
-    }
   }
 }
 </script>

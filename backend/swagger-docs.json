@@ -39,25 +39,16 @@
       "description": "Fetches posts with username"
     }
   ],
-  "schemes": [
-    "https",
-    "http"
-  ],
+  "schemes": ["https", "http"],
   "paths": {
     "/api/posts": {
       "post": {
-        "tags": [
-          "posts"
-        ],
+        "tags": ["posts"],
         "summary": "Add a post to the forum",
         "description": "This can only be done by the logged in user.",
         "operationId": "addPost",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -95,18 +86,12 @@
     },
     "/api/posts/{id}": {
       "delete": {
-        "tags": [
-          "posts"
-        ],
+        "tags": ["posts"],
         "summary": "Deletes a post",
         "description": "This can only be done by moderator or above.",
         "operationId": "deletePost",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "header",
@@ -129,13 +114,9 @@
     },
     "/api/subforums": {
       "get": {
-        "tags": [
-          "subforums"
-        ],
+        "tags": ["subforums"],
         "summary": "Get subforums",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "successful operation"
@@ -151,13 +132,9 @@
     },
     "/api/threads": {
       "get": {
-        "tags": [
-          "threads"
-        ],
+        "tags": ["threads"],
         "summary": "Get threads",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "successful operation"
@@ -171,15 +148,11 @@
         }
       },
       "post": {
-        "tags": [
-          "threads"
-        ],
+        "tags": ["threads"],
         "summary": "Create thread",
         "description": "This can only be done by the logged in user.",
         "operationId": "createThread",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -211,18 +184,12 @@
     },
     "/api/threads/{id}": {
       "put": {
-        "tags": [
-          "threads"
-        ],
+        "tags": ["threads"],
         "summary": "Locks a thread",
         "description": "This can only be done by moderator or above.",
         "operationId": "lockThread",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "header",
@@ -266,18 +233,12 @@
         }
       },
       "delete": {
-        "tags": [
-          "threads"
-        ],
+        "tags": ["threads"],
         "summary": "Deletes a thread",
         "description": "This can only be done by moderator or above.",
         "operationId": "deleteThread",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "header",
@@ -300,14 +261,10 @@
     },
     "/api/users": {
       "get": {
-        "tags": [
-          "users"
-        ],
+        "tags": ["users"],
         "summary": "Get users",
         "operationId": "getUsers",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "Recieved users"
@@ -321,14 +278,10 @@
         }
       },
       "post": {
-        "tags": [
-          "users"
-        ],
+        "tags": ["users"],
         "summary": "Create user",
         "operationId": "createUser",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -363,18 +316,12 @@
     },
     "/api/users/{id}": {
       "delete": {
-        "tags": [
-          "users"
-        ],
+        "tags": ["users"],
         "summary": "Deletes a user",
         "description": "This can only be done by adminstrator.",
         "operationId": "deleteUser",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "id",
@@ -390,18 +337,12 @@
         }
       },
       "get": {
-        "tags": [
-          "users"
-        ],
+        "tags": ["users"],
         "summary": "Gets a user",
         "description": "Gets an user from id",
         "operationId": "getUserFromId",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "id",
@@ -425,14 +366,10 @@
     },
     "/api/roles": {
       "post": {
-        "tags": [
-          "roles"
-        ],
+        "tags": ["roles"],
         "summary": "Add role to user",
         "operationId": "addRole",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -464,18 +401,12 @@
     },
     "/api/roles/{id}": {
       "delete": {
-        "tags": [
-          "roles"
-        ],
+        "tags": ["roles"],
         "summary": "Removes a role from user",
         "description": "This can only be done by adminstrator.",
         "operationId": "removeRole",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "header",
@@ -499,18 +430,12 @@
     },
     "/api/login": {
       "post": {
-        "tags": [
-          "login"
-        ],
+        "tags": ["login"],
         "summary": "Logs user into the forum",
         "description": "Saves the user in a session as well",
         "operationId": "login",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -540,14 +465,10 @@
         }
       },
       "get": {
-        "tags": [
-          "login"
-        ],
+        "tags": ["login"],
         "summary": "Check if user is logged in",
         "description": "Returns the user if logged in, else return null",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "Recieved User"
@@ -558,14 +479,10 @@
         }
       },
       "delete": {
-        "tags": [
-          "login"
-        ],
+        "tags": ["login"],
         "summary": "Logout user from the forum",
         "description": "Removes the user from the session",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "204": {
             "description": "Deleted user from user",
@@ -578,14 +495,10 @@
     },
     "/api/threadssubforum/{subforumId}": {
       "get": {
-        "tags": [
-          "threadssubforum"
-        ],
+        "tags": ["threadssubforum"],
         "summary": "Get threads from subforumId",
         "operationId": "getThreadsFromSubforumId",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "subforumId",
@@ -609,14 +522,10 @@
     },
     "/api/postswithusernamethread/{threadsId}": {
       "get": {
-        "tags": [
-          "postswithusernamethread"
-        ],
+        "tags": ["postswithusernamethread"],
         "summary": "Get posts from threadsId",
         "operationId": "getPostsFromThreadsId",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "threadsId",

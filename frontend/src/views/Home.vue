@@ -1,18 +1,52 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="home container">
+    <ul class="list-group">
+      <li
+        v-for="(item, i) of subForumData"
+        :key="`${item}+${i}`"
+        class="list-group-item item"
+        @click="goToRoute(item.id)"
+      >
+        <h2>
+          {{ item.title }}
+        </h2>
+        <h4>
+          {{ item.description }}
+        </h4>
+      </li>
+    </ul>
   </div>
 </template>
 
-<script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+<script lang="ts">
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
 
-export default {
-  name: 'Home',
-  components: {
-    HelloWorld
+@Component({
+  components: {},
+})
+export default class Home extends Vue {
+  $store: any;
+  $router: any;
+  get subForumData() {
+    return this.$store.state.subForums;
+  }
+
+  created() {
+    this.$store.dispatch("fetchSubForums");
+  }
+
+  goToRoute(route: string) {
+    this.$router.push(`/forum/${route}`);
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.home {
+  padding-top: 6vh;
+}
+.item:hover {
+  background-color: lightblue;
+}
+</style>

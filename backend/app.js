@@ -2,6 +2,8 @@ const express = require("express");
 const session = require("express-session");
 const store = require("better-express-store");
 const path = require("path");
+const swaggerUI = require("swagger-ui-express");
+const swaggerDocs = require("./swagger-docs.json");
 
 const app = express();
 const RestApi = require("./RestApi");
@@ -37,6 +39,15 @@ app.use(ACL(ACLsettings));
 
 // Creates REST API from elsewhere
 new RestApi(app);
+
+const swaggerOptions = {
+  explorer: true,
+};
+app.use(
+  "/api-docs",
+  swaggerUI.serve,
+  swaggerUI.setup(swaggerDocs, swaggerOptions)
+);
 
 app.use(express.static(path.join(__dirname, "../frontend/dist")));
 

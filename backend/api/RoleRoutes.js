@@ -23,7 +23,7 @@ module.exports = function roleRoutes(app, prefix, db) {
       WHERE userId = $userId AND subforumId = $subforumId
     `);
     try {
-      res.json(statement.run(arguments));
+      res.status("204").json(statement.run(arguments));
     } catch (error) {
       res.json({ error: error + "" });
     }

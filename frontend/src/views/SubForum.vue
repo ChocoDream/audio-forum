@@ -97,6 +97,7 @@ export default class SubForum extends Vue {
       method: "PUT",
       headers: {
         "Content-Type": "Application/json",
+        "subforum-id": `${this.$route.params.subforum}`,
       },
       body: JSON.stringify(thread),
     })

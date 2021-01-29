@@ -1,0 +1,642 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "API documentation for the Music forum API",
+    "version": "1.0.0",
+    "title": "Music Forum",
+    "contact": {
+      "name": "Github",
+      "url": "https://github.com/ChocoDream"
+    }
+  },
+  "tags": [
+    {
+      "name": "posts",
+      "description": "Access to create and delete posts"
+    },
+    {
+      "name": "subforums",
+      "description": "Access to threads"
+    },
+    {
+      "name": "threads",
+      "description": "Operations about user"
+    },
+    {
+      "name": "users"
+    },
+    {
+      "name": "roles"
+    },
+    {
+      "name": "login"
+    },
+    {
+      "name": "threadssubforum"
+    },
+    {
+      "name": "postswithusernamethread",
+      "description": "Fetches posts with username"
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/api/posts": {
+      "post": {
+        "tags": [
+          "posts"
+        ],
+        "summary": "Add a post to the forum",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "addPost",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Post object that needs to be added to the forum",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "content": {
+                  "type": "string"
+                },
+                "userId": {
+                  "type": "integer"
+                },
+                "threadId": {
+                  "type": "integer"
+                },
+                "isModeratorPost": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Post created"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/api/posts/{id}": {
+      "delete": {
+        "tags": [
+          "posts"
+        ],
+        "summary": "Deletes a post",
+        "description": "This can only be done by moderator or above.",
+        "operationId": "deletePost",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "subforum-id",
+            "type": "integer"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Post deleted"
+          }
+        }
+      }
+    },
+    "/api/subforums": {
+      "get": {
+        "tags": [
+          "subforums"
+        ],
+        "summary": "Get subforums",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Caught an error"
+          },
+          "404": {
+            "description": "Subforum not found"
+          }
+        }
+      }
+    },
+    "/api/threads": {
+      "get": {
+        "tags": [
+          "threads"
+        ],
+        "summary": "Get threads",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Caught an error"
+          },
+          "404": {
+            "description": "Thread not found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "threads"
+        ],
+        "summary": "Create thread",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "createThread",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Created thread object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "subforumId": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Thread created"
+          },
+          "400": {
+            "description": "Caught an error"
+          }
+        }
+      }
+    },
+    "/api/threads/{id}": {
+      "put": {
+        "tags": [
+          "threads"
+        ],
+        "summary": "Locks a thread",
+        "description": "This can only be done by moderator or above.",
+        "operationId": "lockThread",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "subforum-id",
+            "type": "integer"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Locked thread object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "subforum": {
+                  "type": "integer"
+                },
+                "isLocked": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation Successful"
+          },
+          "400": {
+            "description": "Caught an error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "threads"
+        ],
+        "summary": "Deletes a thread",
+        "description": "This can only be done by moderator or above.",
+        "operationId": "deleteThread",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "subforum-id",
+            "type": "integer"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Thread deleted"
+          }
+        }
+      }
+    },
+    "/api/users": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get users",
+        "operationId": "getUsers",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Recieved users"
+          },
+          "400": {
+            "description": "Caught an error"
+          },
+          "404": {
+            "description": "No users found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Create user",
+        "operationId": "createUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Created User object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "username": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User created"
+          },
+          "400": {
+            "description": "Caught an error"
+          }
+        }
+      }
+    },
+    "/api/users/{id}": {
+      "delete": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Deletes a user",
+        "description": "This can only be done by adminstrator.",
+        "operationId": "deleteUser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User deleted"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Gets a user",
+        "description": "Gets an user from id",
+        "operationId": "getUserFromId",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recieved user from id"
+          },
+          "400": {
+            "description": "Caught an error"
+          },
+          "404": {
+            "description": "No user found"
+          }
+        }
+      }
+    },
+    "/api/roles": {
+      "post": {
+        "tags": [
+          "roles"
+        ],
+        "summary": "Add role to user",
+        "operationId": "addRole",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Object with parameters needed to add moderator-role to user",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "integer"
+                },
+                "subforumId": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Added role"
+          },
+          "400": {
+            "description": "Caught an error"
+          }
+        }
+      }
+    },
+    "/api/roles/{id}": {
+      "delete": {
+        "tags": [
+          "roles"
+        ],
+        "summary": "Removes a role from user",
+        "description": "This can only be done by adminstrator.",
+        "operationId": "removeRole",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "subforum-id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Removed role"
+          }
+        }
+      }
+    },
+    "/api/login": {
+      "post": {
+        "tags": [
+          "login"
+        ],
+        "summary": "Logs user into the forum",
+        "description": "Saves the user in a session as well",
+        "operationId": "login",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation successful"
+          },
+          "400": {
+            "description": "Caught an error"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "login"
+        ],
+        "summary": "Check if user is logged in",
+        "description": "Returns the user if logged in, else return null",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Recieved User"
+          },
+          "400": {
+            "description": "Not logged in"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "login"
+        ],
+        "summary": "Logout user from the forum",
+        "description": "Removes the user from the session",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted user from user",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "/api/threadssubforum/{subforumId}": {
+      "get": {
+        "tags": [
+          "threadssubforum"
+        ],
+        "summary": "Get threads from subforumId",
+        "operationId": "getThreadsFromSubforumId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "subforumId",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recieved threads"
+          },
+          "400": {
+            "description": "Caught an error"
+          },
+          "404": {
+            "description": "No threads found"
+          }
+        }
+      }
+    },
+    "/api/postswithusernamethread/{threadsId}": {
+      "get": {
+        "tags": [
+          "postswithusernamethread"
+        ],
+        "summary": "Get posts from threadsId",
+        "operationId": "getPostsFromThreadsId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "threadsId",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recieved posts"
+          },
+          "400": {
+            "description": "Caught an error"
+          },
+          "404": {
+            "description": "No posts found"
+          }
+        }
+      }
+    }
+  }
+}

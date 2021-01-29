@@ -152,9 +152,6 @@ module.exports = class RestApi {
     this.app.put(this.prefix + table + "/:id", (req, res) => {
       let body = req.body;
       // Add the id to b
-      if (req.body.subforum) {
-        delete req.body.subforum;
-      }
       body.id = req.params.id;
       let statement = this.db.prepare(`
       UPDATE ${table} 
@@ -172,9 +169,6 @@ module.exports = class RestApi {
 
   createDeleteRoute(table, idKey = "id") {
     this.app.delete(this.prefix + table + "/:id", (req, res) => {
-      if (req.body.subforum) {
-        delete req.body.subforum;
-      }
 
       let statement = this.db.prepare(`
         DELETE FROM ${table} WHERE ${idKey} = $id

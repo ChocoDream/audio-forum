@@ -33,6 +33,6 @@ module.exports.isModeratorOrAbove = isModeratorOrAbove = (user, req) => {
   return (
     user.roles.includes("adminstrator") ||
     (user.roles.includes("moderator") &&
-      user.subforumId.includes(Number(req.body.subforum)))
+      user.subforumId.includes(Number(req.headers["subforum-id"])))
   );
 };

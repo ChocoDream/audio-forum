@@ -80,8 +80,8 @@ export default new Vuex.Store({
         method: "DELETE",
         headers: {
           "Content-Type": "Application/json",
+          "Subforum-Id": `${router.currentRoute.params.subforum}`,
         },
-        body: JSON.stringify({ subforum: router.currentRoute.params.subforum }),
       })
         .then((res) => {
           this.commit("deleteThread", id);
@@ -95,8 +95,8 @@ export default new Vuex.Store({
         method: "DELETE",
         headers: {
           "Content-Type": "Application/json",
+          "Subforum-Id": `${router.currentRoute.params.subforum}`,
         },
-        body: JSON.stringify({ subforum: router.currentRoute.params.subforum }),
       })
         .then((res) => {
           this.commit("deletePost", id);
